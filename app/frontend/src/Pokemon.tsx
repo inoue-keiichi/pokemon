@@ -61,6 +61,10 @@ function Pokemon() {
             title: "スピード",
             value: pokemon?.status?.speed.base_stat,
           },
+          {
+            title: "説明",
+            value: pokemon?.flavor_text,
+          },
         ]}
       />
     </>

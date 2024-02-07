@@ -154,6 +154,11 @@ GEM
       racc (~> 1.4)
     nokogiri (1.15.5-x86_64-linux)
       racc (~> 1.4)
+    oj (3.16.3)
+      bigdecimal (>= 3.0)
+    panko_serializer (0.8.1)
+      activesupport
+      oj (> 3.11.0, < 4.0.0)
     poke-api-v2 (0.1.1)
     pry (0.14.2)
       coderay (~> 1.1)
@@ -292,6 +297,7 @@ DEPENDENCIES
   foreman
   importmap-rails
   jbuilder
+  panko_serializer
   poke-api-v2
   pry (~> 0.14.2)
   puma (>= 5.0)

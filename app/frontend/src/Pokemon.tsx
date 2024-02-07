@@ -1,4 +1,4 @@
-import { Container, DescriptionList } from "@freee_jp/vibes";
+import { Container, DescriptionList, ListTable } from "@freee_jp/vibes";
 import "@freee_jp/vibes/css";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -6,7 +6,7 @@ import "./App.css";
 
 function Pokemon() {
   const { id } = useParams();
-  const [pokemon, setPokemon] = useState<any>({});
+  const [pokemon, setPokemon] = useState<any>();
 
   useEffect(() => {
     (async () => {
@@ -14,6 +14,33 @@ function Pokemon() {
       setPokemon(await res.json());
     })();
   }, [id]);
+
+  if (!pokemon) {
+    return <></>;
+  }
+
+  const levelMoves = pokemon?.moves
+    .filter((move: any) => move.move_learn_method === "level-up")
+    .map((move: any) => ({
+      cells: [
+        {
+          value: move.name,
+        },
+        {
+          value: move.level_learned_at,
+        },
+      ],
+    }));
+
+  const machineMoves = pokemon?.moves
+    .filter((move: any) => move.move_learn_method === "machine")
+    .map((move: any) => ({
+      cells: [
+        {
+          value: move.name,
+        },
+      ],
+    }));
 
   return (
     <>
@@ -66,6 +93,27 @@ function Pokemon() {
             value: pokemon?.flavor_text,
           },
         ]}
+      />
+      <h1>レベル技</h1>
+      <ListTable
+        headers={[
+          {
+            value: "名前",
+          },
+          {
+            value: "レベル",
+          },
+        ]}
+        rows={levelMoves}
+      />
+      <h1>わざマシン</h1>
+      <ListTable
+        headers={[
+          {
+            value: "名前",
+          },
+        ]}
+        rows={machineMoves}
       />
     </>
   );

@@ -2,15 +2,15 @@ require 'rails_helper'
 
 RSpec.describe 'Pokemons', type: :request do
   before do
-    poke_api = spy(PokeApi)
+    spy(PokeApi)
     allow(PokeApi).to receive(:get).and_return(
       Pokedex.new(
         [
           {
             entry_number: 1,
-            pokemon_species:{
-              name:"hoge",
-              url:"https://pokeapi.co/api/v2/pokemon-species/1"
+            pokemon_species: {
+              name: 'hoge',
+              url: 'https://pokeapi.co/api/v2/pokemon-species/1'
             }
           }
         ]

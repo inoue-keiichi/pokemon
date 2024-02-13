@@ -83,4 +83,7 @@ group :test do
   gem 'webdrivers'
 
   gem 'rspec-rails'
+
+  gem 'vcr', '~> 6.2'
+  gem 'webmock', '~> 3.20'
 end

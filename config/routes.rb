@@ -8,8 +8,9 @@ Rails.application.routes.draw do
 
   root 'pokemons#index'
 
-  get 'api/pokemons', to: 'api/pokemons#index'
-  get 'api/pokemons/:id', to: 'api/pokemons#show'
+  namespace :api do
+    resources :pokemons, only: [:index, :show]
+  end
 
   # マッチしないルートはフロントに流す
   get '*all', to: 'pokemons#index'

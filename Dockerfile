@@ -39,6 +39,8 @@ RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - && apt-get instal
 RUN npm install --global yarn
 RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
 
+# Fetch pokemon list
+RUN SECRET_KEY_BASE_DUMMY=1 bundle exec rails runner scripts/fetch_pokemon_list.rb
 
 # Final stage for app image
 FROM base

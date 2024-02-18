@@ -250,3 +250,6 @@ RSpec/ChangeByZero:
 
 Naming/VariableNumber:
   Enabled: false
+
+Style/WordArray:
+  Enabled: false

@@ -2,10 +2,8 @@
 
 class Api::PokemonsController < ApplicationController
   def index
-    result = PokeApi.get(pokemon: { limit: 151, offset: 0 })
-    render json: {
-      results: result.results.map { |r| { name: I18n.t("pokemon.#{r.name}"), url: r.url, id: r.url.sub('https://pokeapi.co/api/v2/pokemon/', '').sub('/', '').to_i } }
-    }
+    pokemon_list = PokemonList.new(region: params[:region])
+    render json: Pokemon::Index::Serializer.new.serialize(pokemon_list).to_json
   end
 
   def show

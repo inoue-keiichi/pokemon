@@ -1,9 +1,10 @@
 class PokemonProfile
   include ActiveModel::Model
-  attr_reader :id
+  attr_reader :id, :version_group
 
-  def initialize(id:)
+  def initialize(id:, version_group:)
     @id = id
+    @version_group = version_group
     @pokemon = PokeApi.get(pokemon: id)
     @pokemon_species = PokeApi.get(pokemon_species: @pokemon.name)
   end
@@ -29,15 +30,20 @@ class PokemonProfile
   end
 
   def flavor_text
-    @pokemon_species.flavor_text_entries.find do |entry|
-      entry.language.name == 'ja' && entry.version.name == 'lets-go-pikachu'
-    end&.flavor_text
+    versions = PokeApi.get(version_group: @version_group).versions.map(&:name)
+
+    flaver_texts = @pokemon_species.flavor_text_entries.filter_map do |entry|
+      {version: I18n.t("version.#{entry.version.name}"), value: entry.flavor_text} if entry.language.name == 'ja' && versions.include?(entry.version.name)
+    end
+    flaver_texts.present? ? flaver_texts.first[:value] : nil # 同世代のfravor_text は同じみたいなので1つだけ返す
+
+    nil
   end
 
   def moves
     moves = @pokemon.moves.flat_map do |move|
       move.version_group_details.filter_map do |version_group_detail|
-        if version_group_detail.version_group.name == 'lets-go-pikachu-lets-go-eevee'
+        if version_group_detail.version_group.name == @version_group
           {
             name: I18n.t("move.#{move.move.name}"),
             level_learned_at: version_group_detail.level_learned_at,
@@ -47,9 +53,5 @@ class PokemonProfile
       end
     end
     moves.sort_by { |move| move[:level_learned_at] }
-  end
-
-  def version
-    'lets-go-pikachu'
   end
 end

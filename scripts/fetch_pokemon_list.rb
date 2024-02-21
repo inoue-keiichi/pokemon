@@ -36,4 +36,4 @@ class PokemonListFetcher
   end
 end
 
-PokemonListFetcher.execute(['kanto'])
+PokemonListFetcher.execute(['kanto', 'johto', 'galar', 'paldea'])

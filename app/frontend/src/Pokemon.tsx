@@ -1,16 +1,19 @@
 import { Container, DescriptionList, ListTable } from "@freee_jp/vibes";
 import "@freee_jp/vibes/css";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Link, useParams } from "react-router-dom";
 import "./App.css";
+import { RootState } from "./store";
 
 function Pokemon() {
   const { id } = useParams();
   const [pokemon, setPokemon] = useState<any>();
+  const { region } = useSelector((state: RootState) => state.searchFilter);
 
   useEffect(() => {
     (async () => {
-      const res = await fetch(`/api/pokemons/${id}`);
+      const res = await fetch(`/api/pokemons/${id}?region=${region}`);
       setPokemon(await res.json());
     })();
   }, [id]);
@@ -44,6 +47,7 @@ function Pokemon() {
 
   return (
     <>
+      <Link to="/pokemons">ポケモンリストに戻る</Link>
       <Container width="wide" mb={1}>
         <img src={pokemon?.sprites?.front_default} />
       </Container>

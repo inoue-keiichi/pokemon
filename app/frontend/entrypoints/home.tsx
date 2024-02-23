@@ -6,6 +6,7 @@ import Pokemon from "../src/Pokemon";
 import PokemonList from "../src/PokemonList";
 import "../src/index.css";
 import { store } from "../src/store";
+import "./i18n";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

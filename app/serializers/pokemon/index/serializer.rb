@@ -1,3 +1,3 @@
 class Pokemon::Index::Serializer < Panko::Serializer
-  attributes :pokemons, :version_groups
+  attributes :pokemons, :pokedexes, :version_groups
 end

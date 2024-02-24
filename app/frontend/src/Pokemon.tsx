@@ -1,4 +1,4 @@
-import { Container, DescriptionList, ListTable } from "@freee_jp/vibes";
+import { DescriptionList, ListTable, VStack } from "@freee_jp/vibes";
 import "@freee_jp/vibes/css";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -47,78 +47,78 @@ function Pokemon() {
 
   return (
     <>
-      <Link to="/pokemons">ポケモンリストに戻る</Link>
-      <Container width="wide" mb={1}>
+      <Link to="/pokemons">ポケモンリストへ戻る</Link>
+      <VStack alignItems={"center"}>
         <img src={pokemon?.sprites?.front_default} />
-      </Container>
 
-      <DescriptionList
-        listContents={[
-          {
-            title: "ID",
-            value: pokemon.id,
-          },
-          {
-            title: "名前",
-            value: pokemon.name,
-          },
-          {
-            title: "タイプ",
-            value: pokemon?.types
-              ?.map((type: { name: string }) => type.name)
-              .join(", "),
-          },
-          {
-            title: "HP",
-            value: pokemon?.status?.hp.base_stat,
-          },
-          {
-            title: "攻撃",
-            value: pokemon?.status?.attack.base_stat,
-          },
-          {
-            title: "防御",
-            value: pokemon?.status?.defense.base_stat,
-          },
-          {
-            title: "特攻",
-            value: pokemon?.status?.special_attack.base_stat,
-          },
-          {
-            title: "特防",
-            value: pokemon?.status?.special_defense.base_stat,
-          },
-          {
-            title: "スピード",
-            value: pokemon?.status?.speed.base_stat,
-          },
-          {
-            title: "説明",
-            value: pokemon?.flavor_text,
-          },
-        ]}
-      />
-      <h1>レベル技</h1>
-      <ListTable
-        headers={[
-          {
-            value: "名前",
-          },
-          {
-            value: "レベル",
-          },
-        ]}
-        rows={levelMoves}
-      />
-      <h1>わざマシン</h1>
-      <ListTable
-        headers={[
-          {
-            value: "名前",
-          },
-        ]}
-        rows={machineMoves}
-      />
+        <DescriptionList
+          listContents={[
+            {
+              title: "ID",
+              value: pokemon.id,
+            },
+            {
+              title: "名前",
+              value: pokemon.name,
+            },
+            {
+              title: "タイプ",
+              value: pokemon?.types
+                ?.map((type: { name: string }) => type.name)
+                .join(", "),
+            },
+            {
+              title: "HP",
+              value: pokemon?.status?.hp.base_stat,
+            },
+            {
+              title: "攻撃",
+              value: pokemon?.status?.attack.base_stat,
+            },
+            {
+              title: "防御",
+              value: pokemon?.status?.defense.base_stat,
+            },
+            {
+              title: "特攻",
+              value: pokemon?.status?.special_attack.base_stat,
+            },
+            {
+              title: "特防",
+              value: pokemon?.status?.special_defense.base_stat,
+            },
+            {
+              title: "スピード",
+              value: pokemon?.status?.speed.base_stat,
+            },
+            {
+              title: "説明",
+              value: pokemon?.flavor_text,
+            },
+          ]}
+        />
+        <h2>レベル技</h2>
+        <ListTable
+          headers={[
+            {
+              value: "名前",
+            },
+            {
+              value: "レベル",
+            },
+          ]}
+          rows={levelMoves}
+        />
+        <h2>わざマシン</h2>
+        <ListTable
+          headers={[
+            {
+              value: "名前",
+            },
+          ]}
+          rows={machineMoves}
+        />
+      </VStack>
     </>
   );
 }

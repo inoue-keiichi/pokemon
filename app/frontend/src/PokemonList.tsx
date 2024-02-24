@@ -1,8 +1,10 @@
 import {
+  ColumnBase,
   GridBlock,
   GridWrapper,
   HStack,
   ListCard,
+  SearchField,
   SelectBox,
 } from "@freee_jp/vibes";
 import "@freee_jp/vibes/css";
@@ -41,7 +43,7 @@ const POKE_CATEGORY: PokeCategory[] = [
 ];
 
 function PokemonList() {
-  const { region } = useSelector((state: RootState) => state.searchFilter);
+  const state = useSelector((state: RootState) => state.searchFilter);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -50,11 +52,11 @@ function PokemonList() {
 
   useEffect(() => {
     (async () => {
-      const res = await fetch(`/api/pokemons?region=${region}`);
+      const res = await fetch(`/api/pokemons?region=${state.region}`);
       const json = (await res.json()) as IndexResponse;
       setPokemons(json.pokemons);
     })();
-  }, [region]);
+  }, [state.region]);
 
   const groupByPokedex = (pokemons: Pokemon[], pokedexNames: string[]) => {
     const flattenPokes = pokemons.flatMap((pokemon) => {
@@ -91,42 +93,71 @@ function PokemonList() {
     return POKE_CATEGORY.find((el) => el.region === region)!.pokedexes!;
   };
 
-  const pokedexNames = getPokedexNames(region);
-  const pokedexMap = groupByPokedex(pokemons, pokedexNames);
+  const pokedexNames = getPokedexNames(state.region);
+  const filterdPokemons = pokemons.filter(
+    (pokemon) => pokemon.name.indexOf(state.name) !== -1
+  );
+  const pokedexMap = groupByPokedex(filterdPokemons, pokedexNames);
 
   return (
     <>
       <h1>ポケモンリスト</h1>
-      <HStack mb={1} justifyContent={"center"}>
-        <SelectBox
-          mb={1}
-          defaultValue={region}
-          options={POKE_CATEGORY.map((poke) => {
-            return { name: poke.name, value: poke.region };
-          })}
-          onChange={(e) => {
-            dispatch(searchFilterUpdated({ region: e.target.value as Region }));
-          }}
-        />
-      </HStack>
+      <ColumnBase>
+        <HStack justifyContent={"center"}>
+          <SelectBox
+            id="filterRegion"
+            defaultValue={state.region}
+            options={POKE_CATEGORY.map((poke) => {
+              return { name: poke.name, value: poke.region };
+            })}
+            onChange={(e) => {
+              dispatch(
+                searchFilterUpdated({
+                  ...state,
+                  region: e.target.value as Region,
+                })
+              );
+            }}
+          />
+          <SearchField
+            placeholder={"ピカチュウ"}
+            onChange={(e) =>
+              dispatch(
+                searchFilterUpdated({
+                  ...state,
+                  name: e.target.value,
+                })
+              )
+            }
+          />
+        </HStack>
+      </ColumnBase>
 
       {pokedexNames.map((pokedexName) => {
+        const target = pokedexMap.get(pokedexName);
+        if (!target || target.length == 0) {
+          return;
+        }
         return (
-          <>
+          <div key={`pokedex_${pokedexName}`}>
             <h2>{t(`pokedex.${pokedexName}`)}</h2>
             <GridWrapper>
-              {pokedexMap.get(pokedexName)!.map((pokemon) => {
+              {target.map((pokemon) => {
                 return (
-                  <GridBlock key={pokemon.id} size={"oneThird"} mb={1}>
+                  <GridBlock
+                    key={`pokemon_${pokemon.id}_${pokemon.entry_number}`}
+                    size={"oneThird"}
+                    mb={1}
+                  >
                     <ListCard
-                      title={pokemon.name}
+                      title={`${pokemon.entry_number}. ${pokemon.name}`}
                       onClick={() => navigate(`/pokemons/${pokemon.id}`)}
                     />
                   </GridBlock>
                 );
               })}
             </GridWrapper>
-          </>
+          </div>
         );
       })}
     </>

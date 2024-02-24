@@ -3,16 +3,17 @@ import { createSlice } from "@reduxjs/toolkit";
 import { Region } from "../types/api";
 
 export type SearchFilter = {
+  name: string;
   region: Region;
 };
 
 const searchFilterSlice = createSlice({
   name: "searchFilter",
-  initialState: { region: "kanto" as Region },
+  initialState: { name: "", region: "kanto" as Region },
   reducers: {
     searchFilterUpdated(state, action: PayloadAction<SearchFilter>) {
       state.region = action.payload.region;
-      console.log(JSON.stringify(state));
+      state.name = action.payload.name;
     },
   },
 });

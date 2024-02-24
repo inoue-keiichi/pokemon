@@ -36,8 +36,6 @@ class PokemonProfile
       {version: I18n.t("version.#{entry.version.name}"), value: entry.flavor_text} if entry.language.name == 'ja' && versions.include?(entry.version.name)
     end
     flaver_texts.present? ? flaver_texts.first[:value] : nil # 同世代のfravor_text は同じみたいなので1つだけ返す
-
-    nil
   end
 
   def moves

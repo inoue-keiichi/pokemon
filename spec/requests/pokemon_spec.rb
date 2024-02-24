@@ -7,165 +7,22 @@ RSpec.describe 'Pokemon', type: :request do
     it 'get pokemon list', :vcr do
       get api_pokemons_path, params: {region: 'kanto'}
       expect(response).to have_http_status(:success)
-      expect(response.parsed_body).to match(
+      body = response.parsed_body
+      expect(body['pokemons'].size).to eq 153
+      expect(body['pokemons']).to include(
         {
-          'pokemons' =>
-          [{'name' => 'フシギダネ', 'id' => 1},
-           {'name' => 'フシギソウ', 'id' => 2},
-           {'name' => 'フシギバナ', 'id' => 3},
-           {'name' => 'ヒトカゲ', 'id' => 4},
-           {'name' => 'リザード', 'id' => 5},
-           {'name' => 'リザードン', 'id' => 6},
-           {'name' => 'ゼニガメ', 'id' => 7},
-           {'name' => 'カメール', 'id' => 8},
-           {'name' => 'カメックス', 'id' => 9},
-           {'name' => 'キャタピー', 'id' => 10},
-           {'name' => 'トランセル', 'id' => 11},
-           {'name' => 'バタフリー', 'id' => 12},
-           {'name' => 'ビードル', 'id' => 13},
-           {'name' => 'コクーン', 'id' => 14},
-           {'name' => 'スピアー', 'id' => 15},
-           {'name' => 'ポッポ', 'id' => 16},
-           {'name' => 'ピジョン', 'id' => 17},
-           {'name' => 'ピジョット', 'id' => 18},
-           {'name' => 'コラッタ', 'id' => 19},
-           {'name' => 'ラッタ', 'id' => 20},
-           {'name' => 'オニスズメ', 'id' => 21},
-           {'name' => 'オニドリル', 'id' => 22},
-           {'name' => 'アーボ', 'id' => 23},
-           {'name' => 'アーボック', 'id' => 24},
-           {'name' => 'ピカチュウ', 'id' => 25},
-           {'name' => 'ライチュウ', 'id' => 26},
-           {'name' => 'サンド', 'id' => 27},
-           {'name' => 'サンドパン', 'id' => 28},
-           {'name' => 'ニドラン♀', 'id' => 29},
-           {'name' => 'ニドリーナ', 'id' => 30},
-           {'name' => 'ニドクイン', 'id' => 31},
-           {'name' => 'ニドラン♂', 'id' => 32},
-           {'name' => 'ニドリーノ', 'id' => 33},
-           {'name' => 'ニドキング', 'id' => 34},
-           {'name' => 'ピッピ', 'id' => 35},
-           {'name' => 'ピクシー', 'id' => 36},
-           {'name' => 'ロコン', 'id' => 37},
-           {'name' => 'キュウコン', 'id' => 38},
-           {'name' => 'プリン', 'id' => 39},
-           {'name' => 'プクリン', 'id' => 40},
-           {'name' => 'ズバット', 'id' => 41},
-           {'name' => 'ゴルバット', 'id' => 42},
-           {'name' => 'ナゾノクサ', 'id' => 43},
-           {'name' => 'クサイハナ', 'id' => 44},
-           {'name' => 'ラフレシア', 'id' => 45},
-           {'name' => 'パラス', 'id' => 46},
-           {'name' => 'パラセクト', 'id' => 47},
-           {'name' => 'コンパン', 'id' => 48},
-           {'name' => 'モルフォン', 'id' => 49},
-           {'name' => 'ディグダ', 'id' => 50},
-           {'name' => 'ダグトリオ', 'id' => 51},
-           {'name' => 'ニャース', 'id' => 52},
-           {'name' => 'ペルシアン', 'id' => 53},
-           {'name' => 'コダック', 'id' => 54},
-           {'name' => 'ゴルダック', 'id' => 55},
-           {'name' => 'マンキー', 'id' => 56},
-           {'name' => 'オコリザル', 'id' => 57},
-           {'name' => 'ガーディ', 'id' => 58},
-           {'name' => 'ウインディ', 'id' => 59},
-           {'name' => 'ニョロモ', 'id' => 60},
-           {'name' => 'ニョロゾ', 'id' => 61},
-           {'name' => 'ニョロボン', 'id' => 62},
-           {'name' => 'ケーシィ', 'id' => 63},
-           {'name' => 'ユンゲラー', 'id' => 64},
-           {'name' => 'フーディン', 'id' => 65},
-           {'name' => 'ワンリキー', 'id' => 66},
-           {'name' => 'ゴーリキー', 'id' => 67},
-           {'name' => 'カイリキー', 'id' => 68},
-           {'name' => 'マダツボミ', 'id' => 69},
-           {'name' => 'ウツドン', 'id' => 70},
-           {'name' => 'ウツドンズク', 'id' => 71},
-           {'name' => 'メノクラゲ', 'id' => 72},
-           {'name' => 'ドククラゲ', 'id' => 73},
-           {'name' => 'イシツブテ', 'id' => 74},
-           {'name' => 'ゴローン', 'id' => 75},
-           {'name' => 'ゴローニャ', 'id' => 76},
-           {'name' => 'ポニータ', 'id' => 77},
-           {'name' => 'ギャロップ', 'id' => 78},
-           {'name' => 'ヤドン', 'id' => 79},
-           {'name' => 'ヤドラン', 'id' => 80},
-           {'name' => 'コイル', 'id' => 81},
-           {'name' => 'レアコイル', 'id' => 82},
-           {'name' => 'カモネギ', 'id' => 83},
-           {'name' => 'ドードー', 'id' => 84},
-           {'name' => 'ドードリオ', 'id' => 85},
-           {'name' => 'パウワウ', 'id' => 86},
-           {'name' => 'ジュゴン', 'id' => 87},
-           {'name' => 'ベトベター', 'id' => 88},
-           {'name' => 'ベトベトン', 'id' => 89},
-           {'name' => 'シェルダー', 'id' => 90},
-           {'name' => 'パルシェン', 'id' => 91},
-           {'name' => 'ゴース', 'id' => 92},
-           {'name' => 'ゴースト', 'id' => 93},
-           {'name' => 'ゲンガー', 'id' => 94},
-           {'name' => 'イワーク', 'id' => 95},
-           {'name' => 'スリープ', 'id' => 96},
-           {'name' => 'スリーパー', 'id' => 97},
-           {'name' => 'クラブ', 'id' => 98},
-           {'name' => 'キングラー', 'id' => 99},
-           {'name' => 'ビリリダマ', 'id' => 100},
-           {'name' => 'マルマイン', 'id' => 101},
-           {'name' => 'タマタマ', 'id' => 102},
-           {'name' => 'ナッシー', 'id' => 103},
-           {'name' => 'カラカラ', 'id' => 104},
-           {'name' => 'ガラガラ', 'id' => 105},
-           {'name' => 'サワムラー', 'id' => 106},
-           {'name' => 'エビワラー', 'id' => 107},
-           {'name' => 'ベロリンガ', 'id' => 108},
-           {'name' => 'ドガース', 'id' => 109},
-           {'name' => 'マタドガス', 'id' => 110},
-           {'name' => 'サイホーン', 'id' => 111},
-           {'name' => 'サイドン', 'id' => 112},
-           {'name' => 'ラッキー', 'id' => 113},
-           {'name' => 'モンジャラ', 'id' => 114},
-           {'name' => 'ガルーラ', 'id' => 115},
-           {'name' => 'タッツー', 'id' => 116},
-           {'name' => 'シードラ', 'id' => 117},
-           {'name' => 'トサキント', 'id' => 118},
-           {'name' => 'アズマオウ', 'id' => 119},
-           {'name' => 'ヒトデマン', 'id' => 120},
-           {'name' => 'スターミー', 'id' => 121},
-           {'name' => 'バリヤード', 'id' => 122},
-           {'name' => 'ストライク', 'id' => 123},
-           {'name' => 'ルージュラ', 'id' => 124},
-           {'name' => 'エレブー', 'id' => 125},
-           {'name' => 'ブーバー', 'id' => 126},
-           {'name' => 'カイロス', 'id' => 127},
-           {'name' => 'ケンタロス', 'id' => 128},
-           {'name' => 'コイキング', 'id' => 129},
-           {'name' => 'ギャラドス', 'id' => 130},
-           {'name' => 'ラプラス', 'id' => 131},
-           {'name' => 'メタモン', 'id' => 132},
-           {'name' => 'イーブイ', 'id' => 133},
-           {'name' => 'シャワーズ', 'id' => 134},
-           {'name' => 'サンダース', 'id' => 135},
-           {'name' => 'ブースター', 'id' => 136},
-           {'name' => 'ポリゴン', 'id' => 137},
-           {'name' => 'オムナイト', 'id' => 138},
-           {'name' => 'オムスター', 'id' => 139},
-           {'name' => 'カブト', 'id' => 140},
-           {'name' => 'カブトプス', 'id' => 141},
-           {'name' => 'プテラ', 'id' => 142},
-           {'name' => 'カビゴン', 'id' => 143},
-           {'name' => 'フリーザー', 'id' => 144},
-           {'name' => 'サンダー', 'id' => 145},
-           {'name' => 'ファイヤー', 'id' => 146},
-           {'name' => 'ミニリュウ', 'id' => 147},
-           {'name' => 'ハクリュー', 'id' => 148},
-           {'name' => 'カイリュー', 'id' => 149},
-           {'name' => 'ミュウツー', 'id' => 150},
-           {'name' => 'ミュウ', 'id' => 151},
-           {'id' => 808, 'name' => 'Translation missing: ja.pokemon.meltan'},
-           {'id' => 809, 'name' => 'Translation missing: ja.pokemon.melmetal'}],
-          'version_groups' => [
-            'red-blue', 'yellow', 'gold-silver', 'crystal', 'firered-leafgreen', 'heartgold-soulsilver', 'lets-go-pikachu-lets-go-eevee'
-          ]
+          'id' => 1,
+          'name' => 'フシギダネ',
+          'pokedexes' => [
+            {'entry_number' => 1, 'name' => 'kanto'},
+            {'entry_number' => 1, 'name' => 'letsgo-kanto'}
+          ], 'region' => 'kanto'
+        },
+        {
+          'id' => 808,
+          'name' => 'メルタン',
+          'pokedexes' => [{'entry_number' => 152, 'name' => 'letsgo-kanto'}],
+          'region' => 'kanto'
         }
       )
     end
@@ -175,7 +32,7 @@ RSpec.describe 'Pokemon', type: :request do
     let(:id) { 25 } # ピカチュウ
 
     it 'get pokemon data', :vcr do
-      get api_pokemon_path(id)
+      get api_pokemon_path(id), params: {region: 'kanto'}
       expect(response).to have_http_status(:success)
       expect(response.parsed_body).to match(
         {'id' => 25,
@@ -230,7 +87,7 @@ RSpec.describe 'Pokemon', type: :request do
         {'name' => 'たたきつける', 'level_learned_at' => 24, 'move_learn_method' => 'level-up'},
         {'name' => 'こうそくいどう', 'level_learned_at' => 27, 'move_learn_method' => 'level-up'},
         {'name' => 'かみなり', 'level_learned_at' => 30, 'move_learn_method' => 'level-up'}],
-         'version' => 'lets-go-pikachu'}
+         'version_group' => 'lets-go-pikachu-lets-go-eevee'}
       )
     end
 
@@ -238,7 +95,7 @@ RSpec.describe 'Pokemon', type: :request do
       let(:id) { 3 } # フシギバナ
 
       it '', :vcr do
-        get api_pokemon_path(id)
+        get api_pokemon_path(id), params: {region: 'kanto'}
         expect(response).to have_http_status(:success)
         expect(response.parsed_body['moves']).to include(
           {'name' => 'はなびらのまい', 'level_learned_at' => 0, 'move_learn_method' => 'level-up'},

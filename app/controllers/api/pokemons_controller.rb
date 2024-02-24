@@ -7,8 +7,9 @@ class Api::PokemonsController < ApplicationController
   end
 
   def show
+    # TODO: client から version を渡すようにする。たぶんゲーム単位でみたいはずなので。
     excluded_vg_list = ['the-isle-of-armor', 'the-crown-tundra', 'the-teal-mask', 'the-indigo-disk']
-    version_group = PokeApi.get(region: params[:region]).version_groups.select{ |vg| !excluded_vg_list.include?(vg.name) }.last.name # 最後の要素が最新のバージョンのはず
+    version_group = PokeApi.get(region: params[:region]).version_groups.reject{ |vg| excluded_vg_list.include?(vg.name) }.last.name # 最後の要素が最新のバージョンのはず
     pokemon_profile = PokemonProfile.new(id: params[:id].to_i, version_group: version_group)
     render json: Pokemon::Show::Serializer.new.serialize(pokemon_profile).to_json
   end

@@ -2,6 +2,30 @@ class PokemonProfile
   include ActiveModel::Model
   attr_reader :id, :version_group
 
+  TYPE_DAMAGE_INITIAL_HASH = {
+    normal: 1,
+    fighting: 1,
+    flying: 1,
+    poison: 1,
+    ground: 1,
+    rock: 1,
+    bug: 1,
+    ghost: 1,
+    steel: 1,
+    fire: 1,
+    water: 1,
+    grass: 1,
+    electric: 1,
+    psychic: 1,
+    ice: 1,
+    dragon: 1,
+    dark: 1,
+    fairy: 1,
+    # 特殊なタイプなので一旦除去する
+    # unknown: 1,　
+    # shadow: 1,
+  }.freeze
+
   def initialize(id:, version_group:)
     @id = id
     @version_group = version_group
@@ -15,7 +39,7 @@ class PokemonProfile
 
   def types
     @pokemon.types.map do |type|
-      { slot: type.slot, name: I18n.t("type.#{type.type.name}"), url: type.type.url }
+      { slot: type.slot, name: type.type.name}
     end
   end
 
@@ -51,5 +75,25 @@ class PokemonProfile
       end
     end
     moves.sort_by { |move| move[:level_learned_at] }
+  end
+
+  def damage_from
+    damage_relations_list = @pokemon.types.map{ |type| PokeApi.get(type: type.type.name).damage_relations }
+    result = TYPE_DAMAGE_INITIAL_HASH.dup
+    damage_relations_list.each do |dr|
+      dr.double_damage_from.each do |ddf|
+        key = ddf.name.to_sym
+        result[key] = result[key] * 2
+      end
+      dr.half_damage_from.each do |ddf|
+        key = ddf.name.to_sym
+        result[key] = result[key] * 0.5
+      end
+      dr.no_damage_from.each do |ddf|
+        key = ddf.name.to_sym
+        result[key] = result[key] * 0
+      end
+    end
+    result
   end
 end

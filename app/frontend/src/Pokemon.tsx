@@ -1,5 +1,6 @@
 import { DescriptionList, ListTable, Loading, VStack } from "@freee_jp/vibes";
 import "@freee_jp/vibes/css";
+import { t } from "i18next";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useSelector } from "react-redux";
@@ -29,6 +30,47 @@ function Pokemon() {
 function FetchPokemon(props: { id: number; region: Region }) {
   const { id, region } = props;
   const pokemon = usePokemon(id, region);
+
+  const damageFrom = (() => {
+    const fourTimes: string[] = [];
+    const doubles: string[] = [];
+    const ones: string[] = [];
+    const zeros: string[] = [];
+    const halfs: string[] = [];
+    const quarters: string[] = [];
+    for (const key in pokemon.damage_from) {
+      switch (pokemon.damage_from[key]) {
+        case 4:
+          fourTimes.push(t(`type.${key}`));
+          break;
+        case 2:
+          doubles.push(t(`type.${key}`));
+          break;
+        case 1:
+          ones.push(t(`type.${key}`));
+          break;
+        case 0:
+          zeros.push(t(`type.${key}`));
+          break;
+        case 0.5:
+          halfs.push(t(`type.${key}`));
+          break;
+        case 0.25:
+          quarters.push(t(`type.${key}`));
+          break;
+        default:
+          throw new Error("unkown multiple number");
+      }
+    }
+    return [
+      { cells: [{ value: "4" }, { value: fourTimes.join(", ") }] },
+      { cells: [{ value: "2" }, { value: doubles.join(", ") }] },
+      { cells: [{ value: "1" }, { value: ones.join(", ") }] },
+      { cells: [{ value: "0.5" }, { value: halfs.join(", ") }] },
+      { cells: [{ value: "0.25" }, { value: quarters.join(", ") }] },
+      { cells: [{ value: "0" }, { value: zeros.join(", ") }] },
+    ];
+  })();
 
   const levelMoves = pokemon.moves
     .filter((move: any) => move.move_learn_method === "level-up")
@@ -69,7 +111,7 @@ function FetchPokemon(props: { id: number; region: Region }) {
           {
             title: "タイプ",
             value: pokemon?.types
-              ?.map((type: { name: string }) => type.name)
+              ?.map((type: { name: string }) => t(`type.${type.name}`))
               .join(", "),
           },
           {
@@ -101,6 +143,18 @@ function FetchPokemon(props: { id: number; region: Region }) {
             value: pokemon?.flavor_text,
           },
         ]}
+      />
+      <h2>受けるダメージ</h2>
+      <ListTable
+        headers={[
+          {
+            value: "倍率",
+          },
+          {
+            value: "タイプ",
+          },
+        ]}
+        rows={damageFrom}
       />
       <h2>レベル技</h2>
       <ListTable

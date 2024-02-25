@@ -120,6 +120,7 @@ function PokemonList() {
             }}
           />
           <SearchField
+            value={state.name}
             placeholder={"ピカチュウ"}
             onChange={(e) =>
               dispatch(

@@ -6,6 +6,7 @@ import {
   ListCard,
   SelectBox,
   SingleComboBox,
+  SingleComboBoxOption,
 } from "@freee_jp/vibes";
 import "@freee_jp/vibes/css";
 import Romanizer from "js-hira-kata-romanize";
@@ -122,11 +123,24 @@ function PokemonList() {
           keywords: createKeywords(state.name),
         };
 
-  const nameComboboxOptions = pokemons.map((pokemon) => ({
-    id: pokemon.id,
-    label: pokemon.name,
-    keywords: createKeywords(pokemon.name),
-  }));
+  const nameComboboxOptions = (() => {
+    const options: SingleComboBoxOption[] = [
+      {
+        id: -1,
+        label: "",
+        subLabel: "クリア",
+        keywords: [],
+      },
+    ];
+    pokemons.forEach((pokemon) => {
+      options.push({
+        id: pokemon.id,
+        label: pokemon.name,
+        keywords: createKeywords(pokemon.name),
+      });
+    });
+    return options;
+  })();
 
   return (
     <>

@@ -4,10 +4,11 @@ import {
   GridWrapper,
   HStack,
   ListCard,
-  SearchField,
   SelectBox,
+  SingleComboBox,
 } from "@freee_jp/vibes";
 import "@freee_jp/vibes/css";
+import Romanizer from "js-hira-kata-romanize";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,6 +17,7 @@ import "./App.css";
 import { searchFilterUpdated } from "./features/searchFilterSlice";
 import { RootState } from "./store";
 import { IndexResponse, Pokemon, Region } from "./types/api";
+import { kanaToHira } from "./utils";
 
 type PokeCategory = {
   name: string;
@@ -41,6 +43,10 @@ const POKE_CATEGORY: PokeCategory[] = [
     pokedexes: ["paldea", "kitakami", "blueberry"],
   },
 ];
+
+const romanizer = new Romanizer({
+  chouon: Romanizer.CHOUON_SKIP,
+});
 
 function PokemonList() {
   const state = useSelector((state: RootState) => state.searchFilter);
@@ -93,11 +99,34 @@ function PokemonList() {
     return POKE_CATEGORY.find((el) => el.region === region)!.pokedexes!;
   };
 
+  const createKeywords = (name: string) => {
+    return [
+      kanaToHira(name),
+      romanizer.romanize(name),
+      romanizer.romanize(name).toLowerCase(),
+    ];
+  };
+
   const pokedexNames = getPokedexNames(state.region);
   const filterdPokemons = pokemons.filter(
     (pokemon) => pokemon.name.indexOf(state.name) !== -1
   );
   const pokedexMap = groupByPokedex(filterdPokemons, pokedexNames);
+
+  const nameComboboxValue =
+    state.name === ""
+      ? undefined
+      : {
+          id: state.id,
+          label: state.name,
+          keywords: createKeywords(state.name),
+        };
+
+  const nameComboboxOptions = pokemons.map((pokemon) => ({
+    id: pokemon.id,
+    label: pokemon.name,
+    keywords: createKeywords(pokemon.name),
+  }));
 
   return (
     <>
@@ -119,18 +148,22 @@ function PokemonList() {
               );
             }}
           />
-          <SearchField
-            value={state.name}
-            placeholder={"ピカチュウ"}
-            onChange={(e) =>
+          <SingleComboBox
+            value={nameComboboxValue}
+            options={nameComboboxOptions}
+            onChange={(e) => {
+              if (!e) {
+                return;
+              }
               dispatch(
                 searchFilterUpdated({
                   ...state,
-                  name: e.target.value,
+                  id: Number(e.id),
+                  name: e.label,
                 })
-              )
-            }
-          />
+              );
+            }}
+          ></SingleComboBox>
         </HStack>
       </ColumnBase>
 

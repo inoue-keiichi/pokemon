@@ -1,10 +1,24 @@
-import { DescriptionList, ListTable, Loading, VStack } from "@freee_jp/vibes";
+import {
+  DescriptionList,
+  HStack,
+  ListTable,
+  Loading,
+  VStack,
+} from "@freee_jp/vibes";
 import "@freee_jp/vibes/css";
 import { t } from "i18next";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
+import {
+  PolarAngleAxis,
+  PolarGrid,
+  PolarRadiusAxis,
+  Radar,
+  RadarChart,
+  Tooltip,
+} from "recharts";
 import "./App.css";
 import { usePokemon } from "./hooks/usePokemon";
 import { RootState } from "./store";
@@ -95,9 +109,52 @@ function FetchPokemon(props: { id: number; region: Region }) {
       ],
     }));
 
+  const statuses = [
+    {
+      subject: "HP",
+      status: pokemon.status.hp.base_stat,
+    },
+    {
+      subject: "攻撃",
+      status: pokemon.status.attack.base_stat,
+    },
+    {
+      subject: "防御",
+      status: pokemon.status.defense.base_stat,
+    },
+    {
+      subject: "特攻",
+      status: pokemon.status.special_attack.base_stat,
+    },
+    {
+      subject: "特防",
+      status: pokemon.status.special_defense.base_stat,
+    },
+    {
+      subject: "スピード",
+      status: pokemon.status.speed.base_stat,
+    },
+  ];
+
   return (
     <VStack alignItems={"center"}>
-      <img src={pokemon?.sprites?.front_default} />
+      <HStack>
+        <img style={{ width: "200px" }} src={pokemon?.sprites?.front_default} />
+        <RadarChart outerRadius={120} width={350} height={350} data={statuses}>
+          <PolarGrid />
+          <PolarAngleAxis dataKey="subject" />
+          <PolarRadiusAxis angle={90} domain={[0, 160]} />
+          <Radar
+            name={pokemon.name}
+            dataKey="status"
+            dot
+            stroke="#8884d8"
+            fill="#8884d8"
+            fillOpacity={0.6}
+          ></Radar>
+          <Tooltip />
+        </RadarChart>
+      </HStack>
       <DescriptionList
         listContents={[
           {
@@ -113,30 +170,6 @@ function FetchPokemon(props: { id: number; region: Region }) {
             value: pokemon?.types
               ?.map((type: { name: string }) => t(`type.${type.name}`))
               .join(", "),
-          },
-          {
-            title: "HP",
-            value: pokemon?.status?.hp.base_stat,
-          },
-          {
-            title: "攻撃",
-            value: pokemon?.status?.attack.base_stat,
-          },
-          {
-            title: "防御",
-            value: pokemon?.status?.defense.base_stat,
-          },
-          {
-            title: "特攻",
-            value: pokemon?.status?.special_attack.base_stat,
-          },
-          {
-            title: "特防",
-            value: pokemon?.status?.special_defense.base_stat,
-          },
-          {
-            title: "スピード",
-            value: pokemon?.status?.speed.base_stat,
           },
           {
             title: "説明",

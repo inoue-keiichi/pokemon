@@ -7,12 +7,12 @@ RSpec.describe 'PokemonListFetcher', :vcr do
   describe 'fetch' do
 
     before do
-      FileUtils.rm_f('../../pokemon_data/pokemon_list/paldea.json')
+      FileUtils.rm_f('../../pokemon_data/pokemon_list/scarlet-violet.json')
     end
 
     it 'fetch pokemon list' do
-      PokemonListFetcher.execute(['paldea'])
-      result = JSON.load_file('pokemon_data/pokemon_list/paldea.json')
+      PokemonListFetcher.execute(['scarlet-violet'])
+      result = JSON.load_file('pokemon_data/pokemon_list/scarlet-violet.json')
       expect(result['pokemons']).to include(
         {
           'id' => 4,

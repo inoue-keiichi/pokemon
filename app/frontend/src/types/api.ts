@@ -11,4 +11,8 @@ export type Pokemon = {
   pokedexes: { name: string; entry_number: number }[];
 };
 
-export type Region = "kanto" | "johto" | "galar" | "paldea";
+export type VERSION_GROUP =
+  | "lets-go-pikachu-lets-go-eevee"
+  | "heartgold-soulsilver"
+  | "sword-shield"
+  | "scarlet-violet";

@@ -17,30 +17,34 @@ import { useNavigate } from "react-router-dom";
 import "./App.css";
 import { searchFilterUpdated } from "./features/searchFilterSlice";
 import { RootState } from "./store";
-import { IndexResponse, Pokemon, Region } from "./types/api";
+import { IndexResponse, Pokemon, VERSION_GROUP } from "./types/api";
 import { kanaToHira } from "./utils";
 
-type PokeCategory = {
+type PokeVersion = {
   name: string;
-  region: Region;
   pokedexes: string[];
+  version_group: VERSION_GROUP;
 };
 
-const POKE_CATEGORY: PokeCategory[] = [
-  { name: "ピカブイ", region: "kanto", pokedexes: ["letsgo-kanto"] },
+const POKE_VERSION: PokeVersion[] = [
+  {
+    name: "ピカブイ",
+    version_group: "lets-go-pikachu-lets-go-eevee",
+    pokedexes: ["letsgo-kanto"],
+  },
   {
     name: "ハートゴールド・ソウルシルバー",
-    region: "johto",
+    version_group: "heartgold-soulsilver",
     pokedexes: ["updated-johto"],
   },
   {
     name: "剣盾",
-    region: "galar",
+    version_group: "sword-shield",
     pokedexes: ["galar", "isle-of-armor", "crown-tundra"],
   },
   {
     name: "SV",
-    region: "paldea",
+    version_group: "scarlet-violet",
     pokedexes: ["paldea", "kitakami", "blueberry"],
   },
 ];
@@ -59,11 +63,13 @@ function PokemonList() {
 
   useEffect(() => {
     (async () => {
-      const res = await fetch(`/api/pokemons?region=${state.region}`);
+      const res = await fetch(
+        `/api/pokemons?version_group=${state.version_group}`
+      );
       const json = (await res.json()) as IndexResponse;
       setPokemons(json.pokemons);
     })();
-  }, [state.region]);
+  }, [state.version_group]);
 
   const groupByPokedex = (pokemons: Pokemon[], pokedexNames: string[]) => {
     const flattenPokes = pokemons.flatMap((pokemon) => {
@@ -96,8 +102,9 @@ function PokemonList() {
     return result;
   };
 
-  const getPokedexNames = (region: Region) => {
-    return POKE_CATEGORY.find((el) => el.region === region)!.pokedexes!;
+  const getPokedexNames = (version_group: VERSION_GROUP) => {
+    return POKE_VERSION.find((el) => el.version_group === version_group)!
+      .pokedexes!;
   };
 
   const createKeywords = (name: string) => {
@@ -108,7 +115,7 @@ function PokemonList() {
     ];
   };
 
-  const pokedexNames = getPokedexNames(state.region);
+  const pokedexNames = getPokedexNames(state.version_group);
   const filterdPokemons = pokemons.filter(
     (pokemon) => pokemon.name.indexOf(state.name) !== -1
   );
@@ -149,15 +156,15 @@ function PokemonList() {
         <HStack justifyContent={"center"}>
           <SelectBox
             id="filterRegion"
-            defaultValue={state.region}
-            options={POKE_CATEGORY.map((poke) => {
-              return { name: poke.name, value: poke.region };
+            defaultValue={state.version_group}
+            options={POKE_VERSION.map((poke) => {
+              return { name: poke.name, value: poke.version_group };
             })}
             onChange={(e) => {
               dispatch(
                 searchFilterUpdated({
                   ...state,
-                  region: e.target.value as Region,
+                  version_group: e.target.value as VERSION_GROUP,
                 })
               );
             }}

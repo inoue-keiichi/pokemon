@@ -3,24 +3,23 @@
 class PokemonListFetcher
   TARGET_DIR = 'pokemon_data/pokemon_list'
 
-  def self.execute(regions)
-    return if regions.blank?
+  def self.execute(version_group_names)
+    return if version_group_names.blank?
 
     FileUtils.mkdir_p(TARGET_DIR)
 
     puts 'fetching pokemon list ...'
-    regions.each do |region_name|
-      File.open("#{TARGET_DIR}/#{region_name}.json", 'w') do |file|
-        region = PokeApi.get(region: region_name)
+    version_group_names.each do |version_group_name|
+      File.open("#{TARGET_DIR}/#{version_group_name}.json", 'w') do |file|
+        version_group = fetch_version_group(version_group_name)
 
-        pokemons = region.pokedexes.flat_map{ |pokedex| get_pokemons(pokedex.name) }
+        pokemons = version_group.pokedexes.flat_map{ |pokedex| get_pokemons(pokedex.name) }
         pokemons = merge_pokedex(pokemons).sort_by { |pokemon| pokemon[:id] }
 
-        pokedexes = region.pokedexes.map(&:name)
-        version_groups = region.version_groups.map(&:name)
+        pokedexes = version_group.pokedexes.map(&:name)
 
-        JSON.dump({pokemons: pokemons, pokedexes: pokedexes, version_groups: version_groups}, file)
-        puts "#{region_name} is done."
+        JSON.dump({pokemons: pokemons, pokedexes: pokedexes}, file)
+        puts "#{version_group_name} is done."
       end
     end
     puts 'finish!!'
@@ -28,6 +27,17 @@ class PokemonListFetcher
 
   class << self
     private
+
+    Pokedex = Struct.new(:name)
+
+    def fetch_version_group(version_group_name)
+      version_group = PokeApi.get(version_group: version_group_name)
+      # SVは version_group のレスポンスに追加コンテンツが含まれていないので hash で持っておく
+      return version_group if version_group_name != 'scarlet-violet'
+
+      version_group.pokedexes.push(Pokedex.new('kitakami'), Pokedex.new('blueberry'))
+      version_group
+    end
 
     def get_pokemons(pokedex)
       pokedex_result = PokeApi.get(pokedex: pokedex)

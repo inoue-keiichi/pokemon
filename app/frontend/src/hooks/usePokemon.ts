@@ -1,7 +1,7 @@
 const pokemonMap = new Map<string, any>();
 
-export function usePokemon(id: number, region: string) {
-  const key = `${id}_${region}`;
+export function usePokemon(id: number, version_group: string) {
+  const key = `${id}_${version_group}`;
 
   const cachedPokemon = pokemonMap.get(key);
 
@@ -9,7 +9,7 @@ export function usePokemon(id: number, region: string) {
     return cachedPokemon;
   }
 
-  throw fetch(`/api/pokemons/${id}?region=${region}`)
+  throw fetch(`/api/pokemons/${id}?version_group=${version_group}`)
     .then((res) => {
       return res.json();
     })

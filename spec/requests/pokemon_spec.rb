@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe 'Pokemon', type: :request do
   describe '#index' do
     it 'get pokemon list', :vcr do
-      get api_pokemons_path, params: {region: 'kanto'}
+      get api_pokemons_path, params: {version_group: 'lets-go-pikachu-lets-go-eevee'}
       expect(response).to have_http_status(:success)
       body = response.parsed_body
       expect(body['pokemons'].size).to eq 153
@@ -14,7 +14,6 @@ RSpec.describe 'Pokemon', type: :request do
           'id' => 1,
           'name' => 'フシギダネ',
           'pokedexes' => [
-            {'entry_number' => 1, 'name' => 'kanto'},
             {'entry_number' => 1, 'name' => 'letsgo-kanto'}
           ], 'region' => 'kanto'
         },
@@ -32,7 +31,7 @@ RSpec.describe 'Pokemon', type: :request do
     let(:id) { 25 } # ピカチュウ
 
     it 'get pokemon data' do
-      get api_pokemon_path(id), params: {region: 'kanto'}
+      get api_pokemon_path(id), params: {version_group: 'lets-go-pikachu-lets-go-eevee'}
       expect(response).to have_http_status(:success)
       expect(response.parsed_body).to match(
         {'id' => 25,
@@ -116,7 +115,7 @@ RSpec.describe 'Pokemon', type: :request do
       let(:id){ 1024 } # テラパゴス
 
       it do
-        get api_pokemon_path(id), params: {region: 'paldea'}
+        get api_pokemon_path(id), params: {version_group: 'scarlet-violet'}
         expect(response).to have_http_status(:success)
         expect(response.parsed_body).to match(
           {
@@ -219,7 +218,7 @@ RSpec.describe 'Pokemon', type: :request do
       let(:id) { 3 } # フシギバナ
 
       it do
-        get api_pokemon_path(id), params: {region: 'kanto'}
+        get api_pokemon_path(id), params: {version_group: 'lets-go-pikachu-lets-go-eevee'}
         expect(response).to have_http_status(:success)
         expect(response.parsed_body['moves']).to include(
           {'name' => 'はなびらのまい', 'level_learned_at' => 0, 'move_learn_method' => 'level-up'},
@@ -235,7 +234,7 @@ RSpec.describe 'Pokemon', type: :request do
         let(:id) { 82 } # レアコイル
 
         it do
-          get api_pokemon_path(id), params: {region: 'kanto'}
+          get api_pokemon_path(id), params: {version_group: 'lets-go-pikachu-lets-go-eevee'}
           expect(response).to have_http_status(:success)
           expect(response.parsed_body['damage_from']).to eq(
             {
@@ -266,7 +265,7 @@ RSpec.describe 'Pokemon', type: :request do
         let(:id) { 195 } # ヌオー
 
         it do
-          get api_pokemon_path(id), params: {region: 'kanto'}
+          get api_pokemon_path(id), params: {version_group: 'lets-go-pikachu-lets-go-eevee'}
           expect(response).to have_http_status(:success)
           expect(response.parsed_body['damage_from']).to eq(
             {
@@ -293,6 +292,13 @@ RSpec.describe 'Pokemon', type: :request do
         end
       end
 
+    end
+
+    context 'not found error when main version group is invalid' do
+      it do
+        get api_pokemon_path(id), params: {version_group: 'the-teal-mask'}
+        expect(response).to have_http_status(:bad_request)
+      end
     end
   end
 end

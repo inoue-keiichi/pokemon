@@ -1,6 +1,6 @@
 class PokemonProfile
   include ActiveModel::Model
-  attr_reader :id, :version_group
+  attr_reader :id
 
   TYPE_DAMAGE_INITIAL_HASH = {
     normal: 1,
@@ -28,7 +28,7 @@ class PokemonProfile
 
   def initialize(id:, version_group:)
     @id = id
-    @version_group = version_group
+    @version_group = FindMainVersionGroup.new.execute(name: version_group)
     @pokemon = PokeApi.get(pokemon: id)
     @pokemon_species = PokeApi.get(pokemon_species: @pokemon.name)
   end
@@ -54,7 +54,7 @@ class PokemonProfile
   end
 
   def flavor_text
-    versions = PokeApi.get(version_group: @version_group).versions.map(&:name)
+    versions = @version_group.versions
 
     flaver_texts = @pokemon_species.flavor_text_entries.filter_map do |entry|
       {version: I18n.t("version.#{entry.version.name}"), value: entry.flavor_text} if entry.language.name == 'ja' && versions.include?(entry.version.name)
@@ -65,7 +65,7 @@ class PokemonProfile
   def moves
     moves = @pokemon.moves.flat_map do |move|
       move.version_group_details.filter_map do |version_group_detail|
-        if version_group_detail.version_group.name == @version_group
+        if version_group_detail.version_group.name == @version_group.name
           {
             name: I18n.t("move.#{move.move.name}"),
             level_learned_at: version_group_detail.level_learned_at,
@@ -95,5 +95,9 @@ class PokemonProfile
       end
     end
     result
+  end
+
+  def version_group
+    @version_group.name
   end
 end

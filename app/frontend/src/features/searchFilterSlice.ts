@@ -1,19 +1,23 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
-import { Region } from "../types/api";
+import { VERSION_GROUP } from "../types/api";
 
 export type SearchFilter = {
   id: number;
   name: string;
-  region: Region;
+  version_group: VERSION_GROUP;
 };
 
 const searchFilterSlice = createSlice({
   name: "searchFilter",
-  initialState: { id: -1, name: "", region: "kanto" as Region },
+  initialState: {
+    id: -1,
+    name: "",
+    version_group: "lets-go-pikachu-lets-go-eevee" as VERSION_GROUP,
+  },
   reducers: {
     searchFilterUpdated(state, action: PayloadAction<SearchFilter>) {
-      state.region = action.payload.region;
+      state.version_group = action.payload.version_group;
       state.id = action.payload.id;
       state.name = action.payload.name;
     },

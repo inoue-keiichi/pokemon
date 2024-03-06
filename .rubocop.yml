@@ -253,3 +253,6 @@ Naming/VariableNumber:
 
 Style/WordArray:
   Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Enabled: false

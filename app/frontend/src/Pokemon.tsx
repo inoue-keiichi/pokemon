@@ -22,11 +22,13 @@ import {
 import "./App.css";
 import { usePokemon } from "./hooks/usePokemon";
 import { RootState } from "./store";
-import { Region } from "./types/api";
+import { VERSION_GROUP } from "./types/api";
 
 function Pokemon() {
   const { id } = useParams();
-  const { region } = useSelector((state: RootState) => state.searchFilter);
+  const { version_group } = useSelector(
+    (state: RootState) => state.searchFilter
+  );
 
   return (
     <>
@@ -34,14 +36,14 @@ function Pokemon() {
       {/* TODO: Error メッセージ用意する */}
       <ErrorBoundary fallback={<div>Error</div>}>
         <Suspense fallback={<Loading coverAll isLoading />}>
-          <FetchPokemon id={Number(id)} region={region} />
+          <FetchPokemon id={Number(id)} region={version_group} />
         </Suspense>
       </ErrorBoundary>
     </>
   );
 }
 
-function FetchPokemon(props: { id: number; region: Region }) {
+function FetchPokemon(props: { id: number; region: VERSION_GROUP }) {
   const { id, region } = props;
   const pokemon = usePokemon(id, region);
 

@@ -40,6 +40,10 @@ RUN npm install --global yarn
 RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
 
 # Fetch pokemon list
+# ファイルがないのに bootsnap で cache を作ろうとしてエラーになるのを防ぐ。
+# bootsnap の設定で無視できないかと思ったがうまくいかず...
+RUN mkdir pokemon_data && touch pokemon_data/version_group_list.json && \
+    echo "{}"  > pokemon_data/version_group_list.json
 RUN SECRET_KEY_BASE_DUMMY=1 bundle exec rails runner scripts/fetch_pokemon_list.rb
 
 # Final stage for app image

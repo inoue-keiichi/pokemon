@@ -1,4 +1,6 @@
-const pokemonMap = new Map<string, any>();
+import { ShowResponse } from "../types/api";
+
+const pokemonMap = new Map<string, ShowResponse>();
 
 export function usePokemon(id: number, version_group: string) {
   const key = `${id}_${version_group}`;

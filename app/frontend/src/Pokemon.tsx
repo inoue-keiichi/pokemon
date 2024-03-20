@@ -22,7 +22,7 @@ import {
 import "./App.css";
 import { usePokemon } from "./hooks/usePokemon";
 import { RootState } from "./store";
-import { VERSION_GROUP } from "./types/api";
+import { Evolution, VERSION_GROUP } from "./types/api";
 
 function Pokemon() {
   const { id } = useParams();
@@ -138,6 +138,39 @@ function FetchPokemon(props: { id: number; region: VERSION_GROUP }) {
     },
   ];
 
+  const createEvolutionChainElement = (evolution: Evolution) => {
+    const evolution_layers = [[evolution]];
+    const queue = [[evolution]];
+
+    while (queue.length > 0) {
+      const evolutions = queue.pop() as Evolution[];
+      console.log(evolution.name);
+
+      const evolution_layer: Evolution[] = [];
+      for (const ev of evolutions) {
+        evolution_layer.push(...ev.evolves_to);
+      }
+      if (evolution_layer.length > 0) {
+        evolution_layers.push(evolution_layer);
+        queue.push(evolution_layer);
+      }
+    }
+
+    return (
+      <HStack>
+        {evolution_layers.map((layer) => (
+          <VStack>
+            {layer
+              .filter((evolution) => evolution.is_in_version_group)
+              .map((evolution) => (
+                <Link to={`/pokemons/${evolution.id}`}>{evolution.name}</Link>
+              ))}
+          </VStack>
+        ))}
+      </HStack>
+    );
+  };
+
   return (
     <VStack alignItems={"center"}>
       <HStack>
@@ -179,6 +212,8 @@ function FetchPokemon(props: { id: number; region: VERSION_GROUP }) {
           },
         ]}
       />
+      <h2>進化</h2>
+      {createEvolutionChainElement(pokemon.evolution_chain)}
       <h2>受けるダメージ</h2>
       <ListTable
         headers={[

@@ -9,7 +9,11 @@ Rails.application.routes.draw do
   root 'pokemons#index'
 
   namespace :api do
-    resources :pokemons, only: [:index, :show]
+    resources :pokemons, only: [:index, :show] do
+      member do
+        get :forms
+      end
+    end
   end
 
   # マッチしないルートはフロントに流す

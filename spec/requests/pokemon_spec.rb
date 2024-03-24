@@ -695,4 +695,108 @@ RSpec.describe 'Pokemon', type: :request do
       end
     end
   end
+
+  describe '#form', :vcr do
+    context 'when there are some forms' do
+      let(:id) { 3 } # フシギバナ
+
+      context 'when mega is valid' do
+        it do
+          get forms_api_pokemon_path(id), params: {version_group: 'lets-go-pikachu-lets-go-eevee'}
+          expect(response).to have_http_status(:success)
+          expect(response.parsed_body).to match(
+            forms: [
+              {
+                id: 10033,
+                name: 'メガフシギバナ',
+                is_in_version_group: true
+              },
+              {
+                id: 10195,
+                name: 'キョダイマックスフシギバナ',
+                is_in_version_group: false
+              }
+            ]
+          )
+        end
+      end
+
+      context 'when gmax is valid' do
+        it do
+          get forms_api_pokemon_path(id), params: {version_group: 'sword-shield'}
+          expect(response).to have_http_status(:success)
+          expect(response.parsed_body).to match(
+            forms: [
+              {
+                id: 10033,
+                name: 'メガフシギバナ',
+                is_in_version_group: false
+              },
+              {
+                id: 10195,
+                name: 'キョダイマックスフシギバナ',
+                is_in_version_group: true
+              }
+            ]
+          )
+        end
+      end
+
+      context 'when sugata is valid in version group' do
+        let(:id) { 128 } # ケンタロス
+
+        it  do
+          get forms_api_pokemon_path(id), params: {version_group: 'scarlet-violet'}
+          expect(response).to have_http_status(:success)
+          expect(response.parsed_body).to match(
+            forms: [
+              {
+                id: 10250,
+                name: 'ケンタロス (パルデアのすがた・コンバットしゅ)',
+                is_in_version_group: true
+              },
+              {
+                id: 10251,
+                name: 'ケンタロス (パルデアのすがた・ブレイズしゅ)',
+                is_in_version_group: true
+              },
+              {
+                id: 10252,
+                name: 'ケンタロス (パルデアのすがた・ウォーターしゅ)',
+                is_in_version_group: true
+              }
+            ]
+          )
+        end
+      end
+
+      context 'when sugata is invalid in version group' do
+        let(:id) { 128 } # ケンタロス
+
+        it  do
+          get forms_api_pokemon_path(id), params: {version_group: 'lets-go-pikachu-lets-go-eevee'}
+          expect(response).to have_http_status(:success)
+          expect(response.parsed_body).to match(
+            forms: [
+              {
+                id: 10250,
+                name: 'ケンタロス (パルデアのすがた・コンバットしゅ)',
+                is_in_version_group: false
+              },
+              {
+                id: 10251,
+                name: 'ケンタロス (パルデアのすがた・ブレイズしゅ)',
+                is_in_version_group: false
+              },
+              {
+                id: 10252,
+                name: 'ケンタロス (パルデアのすがた・ウォーターしゅ)',
+                is_in_version_group: false
+              }
+            ]
+          )
+        end
+      end
+    end
+  end
 end

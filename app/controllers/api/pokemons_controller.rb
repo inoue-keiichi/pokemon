@@ -13,4 +13,10 @@ class Api::PokemonsController < ApplicationController
     pokemon_profile = PokemonProfile.new(id: input.id, version_group: input.version_group)
     render json: Pokemon::Show::Serializer.new.serialize(pokemon_profile).to_json
   end
+
+  def forms
+    input = Api::Pokemons::Forms::InputForm.new(id: params[:id].to_i, version_group: params[:version_group])
+    output = FetchForms.new.execute(id: input.id, version_group: input.version_group)
+    render json: Pokemon::Forms::Serializer.new.serialize(output).to_json
+  end
 end

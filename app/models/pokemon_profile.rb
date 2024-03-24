@@ -31,7 +31,7 @@ class PokemonProfile
     @id = id
     @version_group = FindMainVersionGroup.new.execute(name: version_group)
     @pokemon = PokeApi.get(pokemon: id)
-    @pokemon_species = PokeApi.get(pokemon_species: @pokemon.name)
+    @pokemon_species = @pokemon.species.get
   end
 
   def name

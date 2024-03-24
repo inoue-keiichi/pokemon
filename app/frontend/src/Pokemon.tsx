@@ -21,6 +21,7 @@ import {
 } from "recharts";
 import "./App.css";
 import { usePokemon } from "./hooks/usePokemon";
+import { usePokemonForms } from "./hooks/usePokemonForms";
 import { RootState } from "./store";
 import { Evolution, VERSION_GROUP } from "./types/api";
 
@@ -214,6 +215,16 @@ function FetchPokemon(props: { id: number; region: VERSION_GROUP }) {
       />
       <h2>進化</h2>
       {createEvolutionChainElement(pokemon.evolution_chain)}
+      <h2>すがた</h2>
+      <Suspense
+        fallback={
+          <Loading isLoading={true}>
+            <p>ロード中...</p>
+          </Loading>
+        }
+      >
+        <FetchPokemonForm id={id} region={region}></FetchPokemonForm>
+      </Suspense>
       <h2>受けるダメージ</h2>
       <ListTable
         headers={[
@@ -248,6 +259,23 @@ function FetchPokemon(props: { id: number; region: VERSION_GROUP }) {
         rows={machineMoves}
       />
     </VStack>
+  );
+}
+
+function FetchPokemonForm(props: { id: number; region: VERSION_GROUP }) {
+  const { id, region } = props;
+  const { forms } = usePokemonForms(id, region);
+
+  return (
+    <HStack>
+      {forms
+        .filter((form) => form.is_in_version_group)
+        .map((form) => (
+          <Link to={`/pokemons/${form.id}`}>
+            {form.name.replace(/^.+\(/, "").replace(/\)$/, "")}
+          </Link>
+        ))}
+    </HStack>
   );
 }
 

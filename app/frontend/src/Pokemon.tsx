@@ -127,16 +127,16 @@ function FetchPokemon(props: { id: number; region: VERSION_GROUP }) {
       status: pokemon.status.defense.base_stat,
     },
     {
-      subject: "特攻",
-      status: pokemon.status.special_attack.base_stat,
+      subject: "スピード",
+      status: pokemon.status.speed.base_stat,
     },
     {
       subject: "特防",
       status: pokemon.status.special_defense.base_stat,
     },
     {
-      subject: "スピード",
-      status: pokemon.status.speed.base_stat,
+      subject: "特攻",
+      status: pokemon.status.special_attack.base_stat,
     },
   ];
 

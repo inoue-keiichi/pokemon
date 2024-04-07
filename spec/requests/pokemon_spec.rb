@@ -811,6 +811,74 @@ RSpec.describe 'Pokemon', type: :request do
       end
     end
 
+    context 'get pokemon data whose has some evolution chains in additional contents' do
+      let(:id){ 1 } # フシギダネ
+      let(:version_group){ 'scarlet-violet' }
+
+        it do
+          get evolution_chain_api_pokemon_path(id), params: {version_group: version_group}
+          expect(response).to have_http_status(:success)
+          expect(response.parsed_body['evolution_chain']).to eq(
+            {
+              'id' => 1,
+              'name' => 'フシギダネ',
+              'is_baby' => false,
+              'evolution_details' => [],
+              'evolves_to' =>
+                [{'id' => 2,
+                  'name' => 'フシギソウ',
+                  'is_baby' => false,
+                  'evolution_details' =>
+                    [{'item' => nil,
+                      'trigger' => {'name' => 'level-up', 'url' => 'https://pokeapi.co/api/v2/evolution-trigger/1/'},
+                      'gender' => nil,
+                      'held_item' => nil,
+                      'known_move' => nil,
+                      'known_move_type' => nil,
+                      'location' => nil,
+                      'min_level' => 16,
+                      'min_happiness' => nil,
+                      'min_beauty' => nil,
+                      'min_affection' => nil,
+                      'needs_overworld_rain' => false,
+                      'party_species' => nil,
+                      'party_type' => nil,
+                      'relative_physical_stats' => nil,
+                      'time_of_day' => '',
+                      'trade_species' => nil,
+                      'turn_upside_down' => false}],
+                  'evolves_to' =>
+                   [{'id' => 3,
+                     'name' => 'フシギバナ',
+                     'is_baby' => false,
+                     'evolution_details' =>
+                      [{'item' => nil,
+                        'trigger' => {'name' => 'level-up', 'url' => 'https://pokeapi.co/api/v2/evolution-trigger/1/'},
+                        'gender' => nil,
+                        'held_item' => nil,
+                        'known_move' => nil,
+                        'known_move_type' => nil,
+                        'location' => nil,
+                        'min_level' => 32,
+                        'min_happiness' => nil,
+                        'min_beauty' => nil,
+                        'min_affection' => nil,
+                        'needs_overworld_rain' => false,
+                        'party_species' => nil,
+                        'party_type' => nil,
+                        'relative_physical_stats' => nil,
+                        'time_of_day' => '',
+                        'trade_species' => nil,
+                        'turn_upside_down' => false}],
+                     'evolves_to' => [],
+                     'is_in_version_group' => true}],
+                  'is_in_version_group' => true}],
+              'is_in_version_group' => true
+            }
+          )
+        end
+    end
+
     context 'when pokemon id is one which is not default form' do
       let(:id){ 10033 } # メガフシギバナ
       let(:version_group){ 'lets-go-pikachu-lets-go-eevee' }

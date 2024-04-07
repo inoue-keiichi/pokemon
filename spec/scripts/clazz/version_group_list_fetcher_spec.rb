@@ -17,7 +17,7 @@ RSpec.describe 'VersionGroupListFetcher', :vcr do
         [
           {'name' => 'lets-go-pikachu-lets-go-eevee', 'regions' => ['kanto'], 'pokedexes' => ['letsgo-kanto'], 'versions' => ['lets-go-pikachu', 'lets-go-eevee']},
           {'name' => 'sword-shield', 'regions' => ['galar'], 'pokedexes' => ['galar', 'isle-of-armor', 'crown-tundra'], 'versions' => ['sword', 'shield']},
-          {'name' => 'scarlet-violet', 'regions' => ['paldea'], 'pokedexes' => ['paldea'], 'versions' => ['scarlet', 'violet']}
+          {'name' => 'scarlet-violet', 'regions' => ['paldea'], 'pokedexes' => ['paldea', 'kitakami', 'blueberry'], 'versions' => ['scarlet', 'violet']}
         ]
       )
     end

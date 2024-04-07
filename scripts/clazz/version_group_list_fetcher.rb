@@ -13,7 +13,13 @@ class VersionGroupListFetcher
       result = []
       version_group_names.each do |version_group_name|
         version_group = PokeApi.get(version_group: version_group_name)
-        result << {name: version_group.name, regions: version_group.regions.map(&:name), pokedexes: version_group.pokedexes.map(&:name), versions: version_group.versions.map(&:name)}
+        pokedexes = version_group.pokedexes.map(&:name)
+        # なぜか追加コンテンツが含まれてないので追加
+        if version_group_name == 'scarlet-violet'
+          pokedexes << 'kitakami'
+          pokedexes << 'blueberry'
+        end
+        result << {name: version_group.name, regions: version_group.regions.map(&:name), pokedexes: pokedexes, versions: version_group.versions.map(&:name)}
       end
 
       JSON.dump(result, file)

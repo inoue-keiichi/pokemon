@@ -13,7 +13,7 @@ class FetchEvolutionChain
 
   def execute(id:, version_group:)
     @version_group = FindMainVersionGroup.new.execute(name: version_group)
-    @pokemon_species = PokeApi.get(pokemon_species: id)
+    @pokemon_species = PokeApi.get(pokemon: id).species.get
 
     evolution_chain = create_evolution_chain(@pokemon_species.evolution_chain.get.chain)
     Output.new(evolution_chain: evolution_chain)

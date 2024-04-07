@@ -47,6 +47,10 @@ export type FormsResponse = {
   forms: { id: number; name: string; is_in_version_group: boolean }[];
 };
 
+export type EvolutionChainResponse = {
+  evolution_chain: Evolution;
+};
+
 export type Evolution = {
   id: number;
   name: string;

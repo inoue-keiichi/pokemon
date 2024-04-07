@@ -20,6 +20,7 @@ import {
   Tooltip,
 } from "recharts";
 import "./App.css";
+import { useEvolutionChain } from "./hooks/useEvolutionChain";
 import { usePokemon } from "./hooks/usePokemon";
 import { usePokemonForms } from "./hooks/usePokemonForms";
 import { RootState } from "./store";
@@ -139,39 +140,6 @@ function FetchPokemon(props: { id: number; region: VERSION_GROUP }) {
     },
   ];
 
-  const createEvolutionChainElement = (evolution: Evolution) => {
-    const evolution_layers = [[evolution]];
-    const queue = [[evolution]];
-
-    while (queue.length > 0) {
-      const evolutions = queue.pop() as Evolution[];
-      console.log(evolution.name);
-
-      const evolution_layer: Evolution[] = [];
-      for (const ev of evolutions) {
-        evolution_layer.push(...ev.evolves_to);
-      }
-      if (evolution_layer.length > 0) {
-        evolution_layers.push(evolution_layer);
-        queue.push(evolution_layer);
-      }
-    }
-
-    return (
-      <HStack>
-        {evolution_layers.map((layer) => (
-          <VStack>
-            {layer
-              .filter((evolution) => evolution.is_in_version_group)
-              .map((evolution) => (
-                <Link to={`/pokemons/${evolution.id}`}>{evolution.name}</Link>
-              ))}
-          </VStack>
-        ))}
-      </HStack>
-    );
-  };
-
   return (
     <VStack alignItems={"center"}>
       <HStack>
@@ -214,7 +182,15 @@ function FetchPokemon(props: { id: number; region: VERSION_GROUP }) {
         ]}
       />
       <h2>進化</h2>
-      {createEvolutionChainElement(pokemon.evolution_chain)}
+      <Suspense
+        fallback={
+          <Loading isLoading={true}>
+            <p>ロード中...</p>
+          </Loading>
+        }
+      >
+        <FetchEvolutionChain id={id} region={region} />
+      </Suspense>
       <h2>すがた</h2>
       <Suspense
         fallback={
@@ -275,6 +251,42 @@ function FetchPokemonForm(props: { id: number; region: VERSION_GROUP }) {
             {form.name.replace(/^.+\(/, "").replace(/\)$/, "")}
           </Link>
         ))}
+    </HStack>
+  );
+}
+
+function FetchEvolutionChain(props: { id: number; region: VERSION_GROUP }) {
+  const { id, region } = props;
+  const { evolution_chain: evolution } = useEvolutionChain(id, region);
+
+  const evolution_layers = [[evolution]];
+  const queue = [[evolution]];
+
+  while (queue.length > 0) {
+    const evolutions = queue.pop() as Evolution[];
+    console.log(evolution.name);
+
+    const evolution_layer: Evolution[] = [];
+    for (const ev of evolutions) {
+      evolution_layer.push(...ev.evolves_to);
+    }
+    if (evolution_layer.length > 0) {
+      evolution_layers.push(evolution_layer);
+      queue.push(evolution_layer);
+    }
+  }
+
+  return (
+    <HStack>
+      {evolution_layers.map((layer) => (
+        <VStack>
+          {layer
+            .filter((evolution) => evolution.is_in_version_group)
+            .map((evolution) => (
+              <Link to={`/pokemons/${evolution.id}`}>{evolution.name}</Link>
+            ))}
+        </VStack>
+      ))}
     </HStack>
   );
 }

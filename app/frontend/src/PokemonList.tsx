@@ -1,5 +1,6 @@
 import {
   ColumnBase,
+  FormControl,
   GridBlock,
   GridWrapper,
   HStack,
@@ -153,37 +154,46 @@ function PokemonList() {
     <>
       <ColumnBase>
         <HStack justifyContent={"center"}>
-          <SelectBox
-            id="filterRegion"
-            defaultValue={state.version_group}
-            options={POKE_VERSION.map((poke) => {
-              return { name: poke.name, value: poke.version_group };
-            })}
-            onChange={(e) => {
-              dispatch(
-                searchFilterUpdated({
-                  ...state,
-                  version_group: e.target.value as VERSION_GROUP,
-                })
-              );
-            }}
-          />
-          <SingleComboBox
-            value={nameComboboxValue}
-            options={nameComboboxOptions}
-            onChange={(e) => {
-              if (!e) {
-                return;
-              }
-              dispatch(
-                searchFilterUpdated({
-                  ...state,
-                  id: Number(e.id),
-                  name: e.label,
-                })
-              );
-            }}
-          ></SingleComboBox>
+          <div style={{ textAlign: "left" }}>
+            <FormControl label="バージョン" fieldId="versionSelectBox">
+              <SelectBox
+                id="versionSelectBox"
+                defaultValue={state.version_group}
+                options={POKE_VERSION.map((poke) => {
+                  return { name: poke.name, value: poke.version_group };
+                })}
+                onChange={(e) => {
+                  dispatch(
+                    searchFilterUpdated({
+                      ...state,
+                      version_group: e.target.value as VERSION_GROUP,
+                    })
+                  );
+                }}
+              />
+            </FormControl>
+          </div>
+          <div style={{ textAlign: "left" }}>
+            <FormControl label="名前" fieldId="nameCombobox">
+              <SingleComboBox
+                id="nameCombobox"
+                value={nameComboboxValue}
+                options={nameComboboxOptions}
+                onChange={(e) => {
+                  if (!e) {
+                    return;
+                  }
+                  dispatch(
+                    searchFilterUpdated({
+                      ...state,
+                      id: Number(e.id),
+                      name: e.label,
+                    })
+                  );
+                }}
+              />
+            </FormControl>
+          </div>
         </HStack>
       </ColumnBase>
 

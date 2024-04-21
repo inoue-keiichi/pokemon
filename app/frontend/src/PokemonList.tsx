@@ -151,7 +151,6 @@ function PokemonList() {
 
   return (
     <>
-      <h1>ポケモンリスト</h1>
       <ColumnBase>
         <HStack justifyContent={"center"}>
           <SelectBox

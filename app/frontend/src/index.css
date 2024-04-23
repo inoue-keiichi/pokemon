@@ -13,6 +13,14 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  width: 80%;
+}
+
 a {
   font-weight: 500;
   color: #646cff;
@@ -64,4 +72,13 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+.vb-globalNavi {
+  min-width: initial;
+}
+
+.vb-tableListHeadCell {
+  writing-mode: vertical-rl;
+  height: initial;
 }

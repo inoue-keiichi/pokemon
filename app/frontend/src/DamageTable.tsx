@@ -1,11 +1,12 @@
 import {
   ColumnBase,
   FormControl,
-  GridBlock,
   HStack,
   MultiComboBox,
   MultiComboBoxOption,
   NumericTable,
+  ScrollableBase,
+  Text,
 } from "@freee_jp/vibes";
 import { useState } from "react";
 
@@ -99,13 +100,14 @@ export function DamageTable() {
 
   return (
     <>
-      <ColumnBase>
+      <ColumnBase mb={1}>
         <HStack justifyContent={"center"}>
           <div style={{ textAlign: "left" }}>
             <FormControl label="与えるダメージ" fieldId="damageToMultiComboBox">
               <MultiComboBox
                 id="damageToMultiComboBox"
                 values={damageToTypes}
+                width={"large"}
                 options={options}
                 onChange={(e) => {
                   setDamageToTypes(e);
@@ -121,6 +123,7 @@ export function DamageTable() {
               <MultiComboBox
                 id="damageFromMultiComboBox"
                 values={damageFromTypes}
+                width={"large"}
                 options={options}
                 onChange={(e) => {
                   setDamageFromTypes(e);
@@ -131,8 +134,8 @@ export function DamageTable() {
         </HStack>
       </ColumnBase>
 
-      <h2>与えられるダメージ</h2>
-      <GridBlock size={"half"}>
+      <Text weight="bold">与えられるダメージ</Text>
+      <HStack justifyContent={"center"}>
         <div
           style={{
             writingMode: "vertical-rl",
@@ -140,17 +143,20 @@ export function DamageTable() {
             display: "inline-block",
           }}
         >
-          <h2>与えるダメージ</h2>
+          <Text weight="bold">与えるダメージ</Text>
         </div>
-        <div style={{ display: "inline-block" }}>
-          <NumericTable
-            fixedRowHeader
-            rowHeaderCount={1}
-            headers={headers}
-            rows={rows}
-          />
+        <div style={{ display: "inline-block", width: "90%" }}>
+          <ScrollableBase scrollableX>
+            <NumericTable
+              fixedHeader
+              fixedRowHeader
+              rowHeaderCount={1}
+              headers={headers}
+              rows={rows}
+            />
+          </ScrollableBase>
         </div>
-      </GridBlock>
+      </HStack>
     </>
   );
 }

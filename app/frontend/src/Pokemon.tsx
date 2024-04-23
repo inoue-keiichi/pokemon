@@ -19,7 +19,6 @@ import {
   RadarChart,
   Tooltip,
 } from "recharts";
-import "./App.css";
 import { useEvolutionChain } from "./hooks/useEvolutionChain";
 import { usePokemon } from "./hooks/usePokemon";
 import { usePokemonForms } from "./hooks/usePokemonForms";

@@ -15,7 +15,6 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import "./App.css";
 import { searchFilterUpdated } from "./features/searchFilterSlice";
 import { RootState } from "./store";
 import { IndexResponse, Pokemon, VERSION_GROUP } from "./types/api";
@@ -197,33 +196,36 @@ function PokemonList() {
         </HStack>
       </ColumnBase>
 
-      {pokedexNames.map((pokedexName) => {
-        const target = pokedexMap.get(pokedexName);
-        if (!target || target.length == 0) {
-          return;
-        }
-        return (
-          <div key={`pokedex_${pokedexName}`}>
-            <h2>{t(`pokedex.${pokedexName}`)}</h2>
-            <GridWrapper>
-              {target.map((pokemon) => {
-                return (
-                  <GridBlock
-                    key={`pokemon_${pokemon.id}_${pokemon.entry_number}`}
-                    size={"oneThird"}
-                    mb={1}
-                  >
-                    <ListCard
-                      title={`${pokemon.entry_number}. ${pokemon.name}`}
-                      onClick={() => navigate(`/pokemons/${pokemon.id}`)}
-                    />
-                  </GridBlock>
-                );
-              })}
-            </GridWrapper>
-          </div>
-        );
-      })}
+      {/* <div style={{ width: "80%", display: "flex", justifyContent: "center" }}> */}
+      <div>
+        {pokedexNames.map((pokedexName) => {
+          const target = pokedexMap.get(pokedexName);
+          if (!target || target.length == 0) {
+            return;
+          }
+          return (
+            <div key={`pokedex_${pokedexName}`}>
+              <h2>{t(`pokedex.${pokedexName}`)}</h2>
+              <GridWrapper>
+                {target.map((pokemon) => {
+                  return (
+                    <GridBlock
+                      key={`pokemon_${pokemon.id}_${pokemon.entry_number}`}
+                      size={"oneThird"}
+                      mb={1}
+                    >
+                      <ListCard
+                        title={`${pokemon.entry_number}. ${pokemon.name}`}
+                        onClick={() => navigate(`/pokemons/${pokemon.id}`)}
+                      />
+                    </GridBlock>
+                  );
+                })}
+              </GridWrapper>
+            </div>
+          );
+        })}
+      </div>
     </>
   );
 }

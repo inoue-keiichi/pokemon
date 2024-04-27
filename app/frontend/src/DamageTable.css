@@ -1,0 +1,20 @@
+.vb-tableListHeadCell {
+  height: initial;
+}
+
+.table-attack-subtitle {
+  writing-mode: vertical-rl;
+  text-align: center;
+  display: inline-block;
+}
+
+.header-cell {
+  writing-mode: vertical-rl;
+  white-space: pre;
+  display: inline-block;
+}
+
+.type-table {
+  display: inline-block;
+  width: 90%;
+}

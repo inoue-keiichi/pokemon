@@ -1,6 +1,7 @@
 import { GlobalNavi } from "@freee_jp/vibes";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "./Header.css";
 
 type Page = "pokemons" | "damage_table";
 

@@ -9,6 +9,7 @@ import {
   Text,
 } from "@freee_jp/vibes";
 import { useState } from "react";
+import "./DamageTable.css";
 
 type DamageType = {
   id: number;
@@ -60,9 +61,9 @@ export function DamageTable() {
 
   function createHeaders(damageFroms: DamageType[]) {
     const headers = damageFroms.map((type) => ({
-      value: type.label,
+      value: <span className={"header-cell"}>{type.label}</span>,
     }));
-    headers.unshift({ value: "" });
+    headers.unshift({ value: <span /> });
     return headers;
   }
 
@@ -91,8 +92,9 @@ export function DamageTable() {
       .sort((a, b) => a.order - b.order)
       .map((damage) => ({
         value: damage.value,
+        noWrap: true,
       }));
-    cells.unshift({ value: damageTo.label });
+    cells.unshift({ value: damageTo.label, noWrap: true });
     return {
       cells,
     };
@@ -100,7 +102,7 @@ export function DamageTable() {
 
   return (
     <>
-      <ColumnBase mb={1}>
+      <ColumnBase mb={2}>
         <HStack justifyContent={"center"}>
           <div style={{ textAlign: "left" }}>
             <FormControl label="与えるダメージ" fieldId="damageToMultiComboBox">
@@ -135,17 +137,11 @@ export function DamageTable() {
       </ColumnBase>
 
       <Text weight="bold">与えられるダメージ</Text>
-      <HStack justifyContent={"center"}>
-        <div
-          style={{
-            writingMode: "vertical-rl",
-            textAlign: "center",
-            display: "inline-block",
-          }}
-        >
+      <HStack justifyContent={"center"} mt={1}>
+        <div className={"table-attack-subtitle"}>
           <Text weight="bold">与えるダメージ</Text>
         </div>
-        <div style={{ display: "inline-block", width: "90%" }}>
+        <div className={"type-table"}>
           <ScrollableBase scrollableX>
             <NumericTable
               fixedHeader

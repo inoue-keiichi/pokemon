@@ -73,12 +73,3 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
-
-.vb-globalNavi {
-  min-width: initial;
-}
-
-.vb-tableListHeadCell {
-  writing-mode: vertical-rl;
-  height: initial;
-}

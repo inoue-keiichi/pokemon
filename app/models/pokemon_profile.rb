@@ -54,6 +54,17 @@ class PokemonProfile
     @pokemon.sprites
   end
 
+  def abilities
+    @pokemon.abilities.map do |a|
+      ability = a.ability.get
+      name = ability.names.find{ |n| n.language.name == 'ja' }.name
+      # 指定した version_group のものがない場合は、他の version_group の flavor_text を使う
+      flavor_text = (ability.flavor_text_entries.find{ |entry| entry.language.name == 'ja' && entry.version_group.name == @version_group.name } ||
+                    ability.flavor_text_entries.find{ |entry| entry.language.name == 'ja' })&.flavor_text
+        {name: name, is_hidden: a.is_hidden, flavor_text: flavor_text}
+    end
+  end
+
   def flavor_text
     versions = @version_group.versions
 

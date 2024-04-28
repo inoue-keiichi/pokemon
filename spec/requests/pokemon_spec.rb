@@ -53,6 +53,10 @@ RSpec.describe 'Pokemon', type: :request do
         'back_shiny' => 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/25.png',
         'front_default' => 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png',
         'front_shiny' => 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/25.png'},
+         'abilities' => [
+           {'flavor_text' => "静電気を　体に　まとい\n触った　相手を\nまひさせる　ことがある。", 'is_hidden' => false, 'name' => 'せいでんき'},
+           {'flavor_text' => "でんきタイプの　技を　自分に\n寄せつけ　ダメージを　受けずに\n特攻が　上がる。", 'is_hidden' => true, 'name' => 'ひらいしん'}
+         ],
          'flavor_text' => "森に　棲む　ポケモン。　ほっぺの\nふくろは　電気を　ためるので\n触ると　パチパチ　痺れるぞ。",
          'moves' => [
            {'name' => 'めいそう', 'level_learned_at' => 0, 'move_learn_method' => 'machine'},
@@ -209,6 +213,7 @@ RSpec.describe 'Pokemon', type: :request do
             },
             'types' => [{'name' => 'normal', 'slot' => 1}],
             'version_group' => 'scarlet-violet',
+            'abilities' => [{'flavor_text' => nil, 'is_hidden' => false, 'name' => 'テラスチェンジ'}],
           }
         )
       end
@@ -292,6 +297,16 @@ RSpec.describe 'Pokemon', type: :request do
         end
       end
 
+    end
+
+    context 'get pokemon data when ability flavor text is empty' do
+      let(:id){ 1024 } # テラパゴス
+
+      it do
+        get api_pokemon_path(id), params: {version_group: 'scarlet-violet'}
+        expect(response).to have_http_status(:success)
+        expect(response.parsed_body[:abilities]).to contain_exactly({'flavor_text' => nil, 'is_hidden' => false, 'name' => 'テラスチェンジ'})
+      end
     end
 
     context 'not found error when main version group is invalid' do

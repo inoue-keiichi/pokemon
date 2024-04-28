@@ -3,6 +3,8 @@ import {
   HStack,
   ListTable,
   Loading,
+  StatusIcon,
+  Text,
   VStack,
 } from "@freee_jp/vibes";
 import "@freee_jp/vibes/css";
@@ -139,6 +141,52 @@ function FetchPokemon(props: { id: number; region: VERSION_GROUP }) {
     },
   ];
 
+  const listContents: {
+    title: string;
+    value: JSX.Element | string | number;
+  }[] = (() => {
+    const abilities = pokemon?.abilities?.map((ability, index) => ({
+      title: `特性${index + 1}`,
+      value: (
+        <>
+          <Text>{`${ability.name} `}</Text>
+          {ability.is_hidden && <StatusIcon type="done">夢特性</StatusIcon>}
+          <br />
+          <Text size={0.75}>{ability.flavor_text}</Text>
+        </>
+      ),
+    }));
+
+    const flavor_text = {
+      title: "説明",
+      value: pokemon?.flavor_text,
+    };
+
+    const result: {
+      title: string;
+      value: JSX.Element | string | number;
+    }[] = [
+      {
+        title: "ID",
+        value: pokemon.id,
+      },
+      {
+        title: "名前",
+        value: pokemon.name,
+      },
+      {
+        title: "タイプ",
+        value: pokemon?.types
+          ?.map((type: { name: string }) => t(`type.${type.name}`))
+          .join(", "),
+      },
+    ];
+
+    result.push(...abilities, flavor_text);
+
+    return result;
+  })();
+
   return (
     <VStack alignItems={"center"}>
       <HStack>
@@ -158,28 +206,7 @@ function FetchPokemon(props: { id: number; region: VERSION_GROUP }) {
           <Tooltip />
         </RadarChart>
       </HStack>
-      <DescriptionList
-        listContents={[
-          {
-            title: "ID",
-            value: pokemon.id,
-          },
-          {
-            title: "名前",
-            value: pokemon.name,
-          },
-          {
-            title: "タイプ",
-            value: pokemon?.types
-              ?.map((type: { name: string }) => t(`type.${type.name}`))
-              .join(", "),
-          },
-          {
-            title: "説明",
-            value: pokemon?.flavor_text,
-          },
-        ]}
-      />
+      <DescriptionList listContents={listContents} />
       <h2>進化</h2>
       <Suspense
         fallback={

@@ -32,6 +32,11 @@ export type ShowResponse = {
   sprites: {
     front_default: string;
   };
+  abilities: {
+    name: string;
+    is_hidden: string;
+    flavor_text: string;
+  }[];
   flavor_text: string;
   moves: {
     level_learned_at: number;

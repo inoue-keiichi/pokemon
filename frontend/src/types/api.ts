@@ -20,7 +20,7 @@ export type VERSION_GROUP =
 export type ShowResponse = {
   id: number;
   name: string;
-  types: any[];
+  types: { name: string; slot: number }[];
   status: {
     attack: Status;
     defense: Status;
@@ -35,9 +35,9 @@ export type ShowResponse = {
   abilities: {
     name: string;
     is_hidden: string;
-    flavor_text: string;
+    flavor_text?: string;
   }[];
-  flavor_text: string;
+  flavor_text?: string;
   moves: {
     level_learned_at: number;
     move_learn_method: string;

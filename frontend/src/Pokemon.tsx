@@ -145,23 +145,6 @@ function FetchPokemon(props: { id: number; region: VERSION_GROUP }) {
     title: string;
     value: JSX.Element | string | number;
   }[] = (() => {
-    const abilities = pokemon?.abilities?.map((ability, index) => ({
-      title: `特性${index + 1}`,
-      value: (
-        <>
-          <Text>{`${ability.name} `}</Text>
-          {ability.is_hidden && <StatusIcon type="done">夢特性</StatusIcon>}
-          <br />
-          <Text size={0.75}>{ability.flavor_text}</Text>
-        </>
-      ),
-    }));
-
-    const flavor_text = {
-      title: "説明",
-      value: pokemon?.flavor_text,
-    };
-
     const result: {
       title: string;
       value: JSX.Element | string | number;
@@ -174,15 +157,50 @@ function FetchPokemon(props: { id: number; region: VERSION_GROUP }) {
         title: "名前",
         value: pokemon.name,
       },
-      {
-        title: "タイプ",
-        value: pokemon?.types
-          ?.map((type: { name: string }) => t(`type.${type.name}`))
-          .join(", "),
-      },
     ];
 
-    result.push(...abilities, flavor_text);
+    const type = {
+      title: "タイプ",
+      value: (
+        <>
+          {pokemon?.types?.map((type) => (
+            <StatusIcon type="done" mr={0.5}>
+              {t(`type.${type.name}`)}
+            </StatusIcon>
+          ))}
+        </>
+      ),
+    };
+
+    const abilities = pokemon?.abilities?.map((ability, index) => ({
+      title: `特性${index + 1}`,
+      value: (
+        <>
+          <Text>{`${ability.name}`}</Text>
+          {ability.is_hidden && (
+            <StatusIcon type="done" ml={0.5}>
+              夢特性
+            </StatusIcon>
+          )}
+          {ability.flavor_text && (
+            <>
+              <br />
+              <Text size={0.75}>{ability.flavor_text}</Text>
+            </>
+          )}
+        </>
+      ),
+    }));
+
+    const flavor_text = pokemon?.flavor_text && {
+      title: "説明",
+      value: pokemon?.flavor_text,
+    };
+
+    result.push(type, ...abilities);
+    if (flavor_text) {
+      result.push(flavor_text);
+    }
 
     return result;
   })();
@@ -290,7 +308,6 @@ function FetchEvolutionChain(props: { id: number; region: VERSION_GROUP }) {
 
   while (queue.length > 0) {
     const evolutions = queue.pop() as Evolution[];
-    console.log(evolution.name);
 
     const evolution_layer: Evolution[] = [];
     for (const ev of evolutions) {

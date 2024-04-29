@@ -320,13 +320,20 @@ function FetchEvolutionChain(props: { id: number; region: VERSION_GROUP }) {
   }
 
   return (
-    <HStack>
+    <HStack alignItems="start">
       {evolution_layers.map((layer) => (
         <VStack>
           {layer
             .filter((evolution) => evolution.is_in_version_group)
             .map((evolution) => (
-              <Link to={`/pokemons/${evolution.id}`}>{evolution.name}</Link>
+              <div>
+                <div>
+                  <Link to={`/pokemons/${evolution.id}`}>{evolution.name}</Link>
+                </div>
+                {evolution.evolution_details.map((evolution_detail) => (
+                  <Text size={0.75}>{evolution_detail}</Text>
+                ))}
+              </div>
             ))}
         </VStack>
       ))}

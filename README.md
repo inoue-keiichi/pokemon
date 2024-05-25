@@ -5,20 +5,30 @@ application up and running.
 
 Things you may want to cover:
 
-* Ruby version
+- Ruby version
 
-* System dependencies
+- System dependencies
 
-* Configuration
+- Configuration
 
-* Database creation
+- Database creation
 
-* Database initialization
+- Database initialization
 
-* How to run the test suite
+- How to run the test suite
 
-* Services (job queues, cache servers, search engines, etc.)
+- Services (job queues, cache servers, search engines, etc.)
 
-* Deployment instructions
+- Deployment instructions
 
-* ...
+- ...
+
+# Docker
+
+```
+docker build --platform linux/amd64 . -t pokemon:latest
+docker tag pokemon:latest <AWS ID>.dkr.ecr.<Region>.amazonaws.com/pokemon:latest
+docker push <AWS ID>.dkr.ecr.<Region>.amazonaws.com/pokemon:latest
+
+docker pull <AWS ID>.dkr.ecr.<Region>.amazonaws.com/pokemon:latest
+```

@@ -5,23 +5,22 @@ require 'rails_helper'
 RSpec.describe 'Pokemon', type: :request do
   describe '#index' do
     it 'get pokemon list', :vcr do
-      get api_pokemons_path, params: {version_group: 'lets-go-pikachu-lets-go-eevee'}
+      get api_pokemons_path, params: {pokedexes: ['letsgo-kanto']}
       expect(response).to have_http_status(:success)
-      body = response.parsed_body
-      expect(body['pokemons'].size).to eq 153
+      body = response.parsed_body.first
+      expect(body[:pokemons].size).to eq 153
       expect(body['pokemons']).to include(
         {
           'id' => 1,
-          'name' => 'フシギダネ',
-          'pokedexes' => [
-            {'entry_number' => 1, 'name' => 'letsgo-kanto'}
-          ], 'region' => 'kanto'
+          'name' => 'bulbasaur',
+          'display_name' => 'フシギダネ',
+          'pokedex_number' => 1
         },
         {
           'id' => 808,
-          'name' => 'メルタン',
-          'pokedexes' => [{'entry_number' => 152, 'name' => 'letsgo-kanto'}],
-          'region' => 'kanto'
+          'name' => 'meltan',
+          'display_name' => 'メルタン',
+          'pokedex_number' => 152
         }
       )
     end

@@ -115,6 +115,11 @@ GEM
     foreman (0.87.2)
     globalid (1.2.1)
       activesupport (>= 6.1)
+    graphql (2.3.4)
+      base64
+    graphql-client (0.22.0)
+      activesupport (>= 3.0)
+      graphql (>= 1.13.0)
     hashdiff (1.1.0)
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
@@ -372,6 +377,7 @@ DEPENDENCIES
   capybara
   debug
   foreman
+  graphql-client (~> 0.22.0)
   importmap-rails
   jbuilder
   panko_serializer

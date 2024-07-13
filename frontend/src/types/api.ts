@@ -4,6 +4,16 @@ export type IndexResponse = {
   version_groups: string[];
 };
 
+export type Pokedex = {
+  name: string;
+  pokemons: {
+    id: number;
+    pokedex_number: number;
+    name: string;
+    display_name: string;
+  }[];
+};
+
 export type Pokemon = {
   id: number;
   name: string;

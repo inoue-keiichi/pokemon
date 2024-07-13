@@ -2,8 +2,12 @@
 
 class Api::PokemonsController < ApplicationController
   def index
-    pokemon_list = PokemonList.new(region: params[:version_group])
-    render json: Pokemon::Index::Serializer.new.serialize(pokemon_list).to_json
+    pokedexes = params[:pokedexes]
+    result = pokedexes.map do |pokedex|
+      pokemons = JSON.load_file("pokemon_data/pokemon_list/#{pokedex}.json")
+      {name: pokedex, pokemons: pokemons}
+    end
+    render json: result.to_json
   end
 
   def show

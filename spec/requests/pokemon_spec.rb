@@ -32,85 +32,19 @@ RSpec.describe 'Pokemon', type: :request do
     it 'get pokemon data' do
       get api_pokemon_path(id), params: {version_group: 'lets-go-pikachu-lets-go-eevee'}
       expect(response).to have_http_status(:success)
+      p response.parsed_body
       expect(response.parsed_body).to match(
-        {'id' => 25,
-         'name' => 'ピカチュウ',
-         'types' => [{'slot' => 1, 'name' => 'electric', }],
-         'status' =>
-       {'hp' => {'base_stat' => 35, 'effort' => 0},
-        'attack' => {'base_stat' => 55, 'effort' => 0},
-        'defense' => {'base_stat' => 40, 'effort' => 0},
-        'special_attack' => {'base_stat' => 50, 'effort' => 0},
-        'special_defense' => {'base_stat' => 50, 'effort' => 0},
-        'speed' => {'base_stat' => 90, 'effort' => 2}},
-         'sprites' =>
-       {'back_female' => 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/female/25.png',
-        'back_shiny_female' => 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/female/25.png',
-        'back_default' => 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/25.png',
-        'front_female' => 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/25.png',
-        'front_shiny_female' => 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/25.png',
-        'back_shiny' => 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/25.png',
-        'front_default' => 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png',
-        'front_shiny' => 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/25.png'},
-         'abilities' => [
-           {'flavor_text' => "静電気を　体に　まとい\n触った　相手を\nまひさせる　ことがある。", 'is_hidden' => false, 'name' => 'せいでんき'},
-           {'flavor_text' => "でんきタイプの　技を　自分に\n寄せつけ　ダメージを　受けずに\n特攻が　上がる。", 'is_hidden' => true, 'name' => 'ひらいしん'}
-         ],
-         'flavor_text' => "森に　棲む　ポケモン。　ほっぺの\nふくろは　電気を　ためるので\n触ると　パチパチ　痺れるぞ。",
-         'moves' => [
-           {'name' => 'めいそう', 'level_learned_at' => 0, 'move_learn_method' => 'machine'},
-           {'name' => 'かみなりパンチ', 'level_learned_at' => 0, 'move_learn_method' => 'machine'},
-           {'name' => 'あなをほる', 'level_learned_at' => 0, 'move_learn_method' => 'machine'},
-           {'name' => 'どくどく', 'level_learned_at' => 0, 'move_learn_method' => 'machine'},
-           {'name' => 'ひかりのかべ', 'level_learned_at' => 0, 'move_learn_method' => 'machine'},
-           {'name' => 'リフレクター', 'level_learned_at' => 0, 'move_learn_method' => 'machine'},
-           {'name' => 'ねむる', 'level_learned_at' => 0, 'move_learn_method' => 'machine'},
-           {'name' => 'みがわり', 'level_learned_at' => 0, 'move_learn_method' => 'machine'},
-           {'name' => 'まもる', 'level_learned_at' => 0, 'move_learn_method' => 'machine'},
-           {'name' => 'アイアンテール', 'level_learned_at' => 0, 'move_learn_method' => 'machine'},
-           {'name' => 'からげんき', 'level_learned_at' => 0, 'move_learn_method' => 'machine'},
-           {'name' => 'てだすけ', 'level_learned_at' => 0, 'move_learn_method' => 'machine'},
-           {'name' => 'れんぞくぎり', 'level_learned_at' => 0, 'move_learn_method' => 'machine'},
-           {'name' => 'ネコにこばん', 'level_learned_at' => 0, 'move_learn_method' => 'machine'},
-           {'name' => 'ずつき', 'level_learned_at' => 0, 'move_learn_method' => 'machine'},
-           {'name' => 'ちきゅうなげ', 'level_learned_at' => 0, 'move_learn_method' => 'machine'},
-           {'name' => '１０まんボルト', 'level_learned_at' => 0, 'move_learn_method' => 'machine'},
-           {'name' => 'でんじは', 'level_learned_at' => 0, 'move_learn_method' => 'machine'},
-           {'name' => 'かみなり', 'level_learned_at' => 0, 'move_learn_method' => 'machine'},
-           {'name' => 'なきごえ', 'level_learned_at' => 1, 'move_learn_method' => 'level-up'},
-           {'name' => 'でんきショック', 'level_learned_at' => 1, 'move_learn_method' => 'level-up'},
-           {'name' => 'しっぽをふる', 'level_learned_at' => 3, 'move_learn_method' => 'level-up'},
-           {'name' => 'でんこうせっか', 'level_learned_at' => 6, 'move_learn_method' => 'level-up'},
-           {'name' => 'にどげり', 'level_learned_at' => 9, 'move_learn_method' => 'level-up'},
-           {'name' => 'かげぶんしん', 'level_learned_at' => 12, 'move_learn_method' => 'level-up'},
-           {'name' => 'でんじは', 'level_learned_at' => 15, 'move_learn_method' => 'level-up'},
-           {'name' => 'ひかりのかべ', 'level_learned_at' => 18, 'move_learn_method' => 'level-up'},
-           {'name' => '１０まんボルト', 'level_learned_at' => 21, 'move_learn_method' => 'level-up'},
-           {'name' => 'たたきつける', 'level_learned_at' => 24, 'move_learn_method' => 'level-up'},
-           {'name' => 'こうそくいどう', 'level_learned_at' => 27, 'move_learn_method' => 'level-up'},
-           {'name' => 'かみなり', 'level_learned_at' => 30, 'move_learn_method' => 'level-up'}
-         ],
-         'version_group' => 'lets-go-pikachu-lets-go-eevee',
-         'damage_from' => {
-           'bug' => 1,
-           'dark' => 1,
-           'dragon' => 1,
-           'electric' => 0.5,
-           'fairy' => 1,
-           'fighting' => 1,
-           'fire' => 1,
-           'flying' => 0.5,
-           'ghost' => 1,
-           'grass' => 1,
-           'ground' => 2,
-           'ice' => 1,
-           'normal' => 1,
-           'poison' => 1,
-           'psychic' => 1,
-           'rock' => 1,
-           'steel' => 0.5,
-           'water' => 1
-         }}
+        {
+          'id' => 25,
+          'name' => 'ピカチュウ',
+          'types' => [{'slot' => 1, 'name' => 'でんき'}],
+          'status' => [{'name' => 'hp', 'label' => 'HP', 'base_stat' => 35, 'effort' => 0}, {'name' => 'attack', 'label' => 'こうげき', 'base_stat' => 55, 'effort' => 0}, {'name' => 'defense', 'label' => 'ぼうぎょ', 'base_stat' => 40, 'effort' => 0}, {'name' => 'special_attack', 'label' => 'とくこう', 'base_stat' => 50, 'effort' => 0}, {'name' => 'special_defense', 'label' => 'とくぼう', 'base_stat' => 50, 'effort' => 0}, {'name' => 'speed', 'label' => 'すばやさ', 'base_stat' => 90, 'effort' => 2}],
+          'sprites' => {'front_default' => 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png'},
+          'abilities' => [{'name' => 'せいでんき', 'is_hidden' => false, 'flavor_text' => "静電気を　体に　まとい\n触った　相手を\nまひさせる　ことがある。"}, {'name' => 'ひらいしん', 'is_hidden' => true, 'flavor_text' => "でんきタイプの　技を　自分に\n寄せつけ　ダメージを　受けずに\n特攻が　上がる。"}],
+          'flavor_text' => "森に　棲む　ポケモン。　ほっぺの\nふくろは　電気を　ためるので\n触ると　パチパチ　痺れるぞ。",
+          'moves' => [{'id' => 45, 'move_learn_method' => 'level-up', 'level' => 1, 'name' => 'なきごえ', 'power' => nil, 'accuracy' => 100, 'pp' => 40, 'type' => 'ノーマル', 'flavor_text' => "かわいい　なきごえを　聞かせて\n気を　ひき　油断を　させて\n相手の　攻撃を　さげる。"}, {'id' => 84, 'move_learn_method' => 'level-up', 'level' => 1, 'name' => 'でんきショック', 'power' => 40, 'accuracy' => 100, 'pp' => 30, 'type' => 'でんき', 'flavor_text' => "電気の　刺激を\n相手に　浴びせて　攻撃する。\nまひ状態に　することが　ある。"}, {'id' => 39, 'move_learn_method' => 'level-up', 'level' => 3, 'name' => 'しっぽをふる', 'power' => nil, 'accuracy' => 100, 'pp' => 30, 'type' => 'ノーマル', 'flavor_text' => "しっぽを　左右に　かわいく　ふって\n油断を　誘う。\n相手の　防御を　さげる。"}, {'id' => 98, 'move_learn_method' => 'level-up', 'level' => 6, 'name' => 'でんこうせっか', 'power' => 40, 'accuracy' => 100, 'pp' => 30, 'type' => 'ノーマル', 'flavor_text' => "目にも　留まらぬ　ものすごい　速さで\n相手に　つっこむ。\n必ず　先制攻撃　できる。"}, {'id' => 24, 'move_learn_method' => 'level-up', 'level' => 9, 'name' => 'にどげり', 'power' => 30, 'accuracy' => 100, 'pp' => 30, 'type' => 'かくとう', 'flavor_text' => "２本の　足で　相手を　けとばして\n攻撃する。　２回連続で\nダメージを　与える。"}, {'id' => 104, 'move_learn_method' => 'level-up', 'level' => 12, 'name' => 'かげぶんしん', 'power' => nil, 'accuracy' => nil, 'pp' => 15, 'type' => 'ノーマル', 'flavor_text' => "素早い　動きで　分身を　つくり\n相手を　まどわせて\n回避率を　あげる。"}, {'id' => 86, 'move_learn_method' => 'level-up', 'level' => 15, 'name' => 'でんじは', 'power' => nil, 'accuracy' => 90, 'pp' => 20, 'type' => 'でんき', 'flavor_text' => "弱い　電撃を　浴びせることで\n相手を　まひ状態に　する。"}, {'id' => 113, 'move_learn_method' => 'level-up', 'level' => 18, 'name' => 'ひかりのかべ', 'power' => nil, 'accuracy' => nil, 'pp' => 30, 'type' => 'エスパー', 'flavor_text' => "５ターンの　間　不思議な　かべで\n相手から　受ける　特殊攻撃の\nダメージを　弱める。"}, {'id' => 85, 'move_learn_method' => 'level-up', 'level' => 21, 'name' => '１０まんボルト', 'power' => 90, 'accuracy' => 100, 'pp' => 15, 'type' => 'でんき', 'flavor_text' => "強い　電撃を\n相手に　浴びせて　攻撃する。\nまひ状態に　することが　ある。"}, {'id' => 21, 'move_learn_method' => 'level-up', 'level' => 24, 'name' => 'たたきつける', 'power' => 80, 'accuracy' => 75, 'pp' => 20, 'type' => 'ノーマル', 'flavor_text' => "長い　しっぽや　つるなどを　使い\n相手を　たたきつけて　攻撃する。"}, {'id' => 97, 'move_learn_method' => 'level-up', 'level' => 27, 'name' => 'こうそくいどう', 'power' => nil, 'accuracy' => nil, 'pp' => 30, 'type' => 'エスパー', 'flavor_text' => "力を　ぬいて　体を　軽くして\n高速で　動く。\n自分の　素早さを　ぐーんと　あげる。"}, {'id' => 87, 'move_learn_method' => 'level-up', 'level' => 30, 'name' => 'かみなり', 'power' => 110, 'accuracy' => 70, 'pp' => 10, 'type' => 'でんき', 'flavor_text' => "激しい　雷を\n相手に　落として　攻撃する。\nまひ状態に　することが　ある。"}, {'id' => 6, 'move_learn_method' => 'machine', 'level' => 0, 'name' => 'ネコにこばん', 'power' => 40, 'accuracy' => 100, 'pp' => 20, 'type' => 'ノーマル', 'flavor_text' => "相手の　体に\n小判を　投げつけて　攻撃する。\n戦闘の　あとで　お金が　もらえる。"}, {'id' => 9, 'move_learn_method' => 'machine', 'level' => 0, 'name' => 'かみなりパンチ', 'power' => 75, 'accuracy' => 100, 'pp' => 15, 'type' => 'でんき', 'flavor_text' => "電撃を　こめた　パンチで\n相手を　攻撃する。\nまひ状態に　することが　ある。"}, {'id' => 29, 'move_learn_method' => 'machine', 'level' => 0, 'name' => 'ずつき', 'power' => 70, 'accuracy' => 100, 'pp' => 15, 'type' => 'ノーマル', 'flavor_text' => "頭を　突きだして\nまっすぐ　つっこんで　攻撃する。\n相手を　ひるませることが　ある。"}, {'id' => 69, 'move_learn_method' => 'machine', 'level' => 0, 'name' => 'ちきゅうなげ', 'power' => nil, 'accuracy' => 100, 'pp' => 20, 'type' => 'かくとう', 'flavor_text' => "引力を　使い　投げとばす。\n自分の　レベルと　同じ　ダメージを\n相手に　与える。"}, {'id' => 85, 'move_learn_method' => 'machine', 'level' => 0, 'name' => '１０まんボルト', 'power' => 90, 'accuracy' => 100, 'pp' => 15, 'type' => 'でんき', 'flavor_text' => "強い　電撃を\n相手に　浴びせて　攻撃する。\nまひ状態に　することが　ある。"}, {'id' => 86, 'move_learn_method' => 'machine', 'level' => 0, 'name' => 'でんじは', 'power' => nil, 'accuracy' => 90, 'pp' => 20, 'type' => 'でんき', 'flavor_text' => "弱い　電撃を　浴びせることで\n相手を　まひ状態に　する。"}, {'id' => 87, 'move_learn_method' => 'machine', 'level' => 0, 'name' => 'かみなり', 'power' => 110, 'accuracy' => 70, 'pp' => 10, 'type' => 'でんき', 'flavor_text' => "激しい　雷を\n相手に　落として　攻撃する。\nまひ状態に　することが　ある。"}, {'id' => 91, 'move_learn_method' => 'machine', 'level' => 0, 'name' => 'あなをほる', 'power' => 80, 'accuracy' => 100, 'pp' => 10, 'type' => 'じめん', 'flavor_text' => "１ターン目に　潜り　２ターン目で\n相手を　攻撃する。"}, {'id' => 92, 'move_learn_method' => 'machine', 'level' => 0, 'name' => 'どくどく', 'power' => nil, 'accuracy' => 90, 'pp' => 10, 'type' => 'どく', 'flavor_text' => "相手を　猛毒の　状態に　する。\nターンが　すすむほど\n毒の　ダメージが　増えていく。"}, {'id' => 113, 'move_learn_method' => 'machine', 'level' => 0, 'name' => 'ひかりのかべ', 'power' => nil, 'accuracy' => nil, 'pp' => 30, 'type' => 'エスパー', 'flavor_text' => "５ターンの　間　不思議な　かべで\n相手から　受ける　特殊攻撃の\nダメージを　弱める。"}, {'id' => 115, 'move_learn_method' => 'machine', 'level' => 0, 'name' => 'リフレクター', 'power' => nil, 'accuracy' => nil, 'pp' => 20, 'type' => 'エスパー', 'flavor_text' => "５ターンの　間　不思議な　かべで\n相手から　受ける　物理攻撃の\nダメージを　弱める。"}, {'id' => 156, 'move_learn_method' => 'machine', 'level' => 0, 'name' => 'ねむる', 'power' => nil, 'accuracy' => nil, 'pp' => 5, 'type' => 'エスパー', 'flavor_text' => "２ターンの　間　眠り続ける。\n自分の　ＨＰと　状態異常を\nすべて　回復する。"}, {'id' => 164, 'move_learn_method' => 'machine', 'level' => 0, 'name' => 'みがわり', 'power' => nil, 'accuracy' => nil, 'pp' => 10, 'type' => 'ノーマル', 'flavor_text' => "自分の　ＨＰを　少し　削って\n分身を　だす。\n分身は　自分の　身代わりに　なる。"}, {'id' => 182, 'move_learn_method' => 'machine', 'level' => 0, 'name' => 'まもる', 'power' => nil, 'accuracy' => nil, 'pp' => 10, 'type' => 'ノーマル', 'flavor_text' => "相手の　攻撃を\nまったく　受けない。\n連続で　だすと　失敗しやすい。"}, {'id' => 231, 'move_learn_method' => 'machine', 'level' => 0, 'name' => 'アイアンテール', 'power' => 100, 'accuracy' => 75, 'pp' => 15, 'type' => 'はがね', 'flavor_text' => "硬い　しっぽで\n相手を　たたきつけて　攻撃する。\n相手の　防御を　さげることが　ある。"}, {'id' => 263, 'move_learn_method' => 'machine', 'level' => 0, 'name' => 'からげんき', 'power' => 70, 'accuracy' => 100, 'pp' => 20, 'type' => 'ノーマル', 'flavor_text' => "自分が　毒　まひ　やけど\n状態のとき　相手に　くりだすと\n技の　威力が　２倍に　なる。"}, {'id' => 270, 'move_learn_method' => 'machine', 'level' => 0, 'name' => 'てだすけ', 'power' => nil, 'accuracy' => nil, 'pp' => 20, 'type' => 'ノーマル', 'flavor_text' => "仲間を　助ける。\nてだすけ　された　ポケモンの　技の\n威力は　いつもより　大きくなる。"}, {'id' => 280, 'move_learn_method' => 'machine', 'level' => 0, 'name' => 'かわらわり', 'power' => 75, 'accuracy' => 100, 'pp' => 15, 'type' => 'かくとう', 'flavor_text' => "手刀を　勢いよく　振りおろして\n相手を　攻撃する。　ひかりのかべや\nリフレクター　なども　破壊できる。"}, {'id' => 347, 'move_learn_method' => 'machine', 'level' => 0, 'name' => 'めいそう', 'power' => nil, 'accuracy' => nil, 'pp' => 20, 'type' => 'エスパー', 'flavor_text' => "静かに　精神を　統一し\n心を　鎮めることで　自分の\n特攻と　特防を　あげる。"}],
+          'damage_from' => {'normal' => 1.0, 'fighting' => 1.0, 'flying' => 0.5, 'poison' => 1.0, 'ground' => 2.0, 'rock' => 1.0, 'bug' => 1.0, 'ghost' => 1.0, 'steel' => 0.5, 'fire' => 1.0, 'water' => 1.0, 'grass' => 1.0, 'electric' => 0.5, 'psychic' => 1.0, 'ice' => 1.0, 'dragon' => 1.0, 'dark' => 1.0, 'fairy' => 1.0}
+        }
       )
     end
 
@@ -122,96 +56,21 @@ RSpec.describe 'Pokemon', type: :request do
         expect(response).to have_http_status(:success)
         expect(response.parsed_body).to match(
           {
-            'damage_from' => {'bug' => 1, 'dark' => 1, 'dragon' => 1, 'electric' => 1, 'fairy' => 1, 'fighting' => 2, 'fire' => 1, 'flying' => 1, 'ghost' => 0, 'grass' => 1, 'ground' => 1, 'ice' => 1, 'normal' => 1, 'poison' => 1, 'psychic' => 1, 'rock' => 1, 'steel' => 1, 'water' => 1},
+            'damage_from' => {'bug' => 1.0, 'dark' => 1.0, 'dragon' => 1.0, 'electric' => 1.0, 'fairy' => 1.0, 'fighting' => 2.0, 'fire' => 1.0, 'flying' => 1.0, 'ghost' => 0.0, 'grass' => 1.0, 'ground' => 1.0, 'ice' => 1.0, 'normal' => 1.0, 'poison' => 1.0, 'psychic' => 1.0, 'rock' => 1.0, 'steel' => 1.0, 'water' => 1.0},
             'flavor_text' => nil,
             'id' => 1024,
-            'moves' => [
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'ちょうおんぱ'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'のしかかり'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'とっしん'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'アイアンヘッド'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'ストーンエッジ'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'ステルスロック'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'ヘビースラム'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'アシストパワー'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'ワイルドボルト'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'ヒートスタンプ'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'マジカルシャイン'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'ボディプレス'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'メテオビーム'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'あなをほる'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'こおりのつむじ'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'すてみタックル'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'ほえる'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'かえんほうしゃ'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'なみのり'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'れいとうビーム'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'はかいこうせん'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'ソーラービーム'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => '１０まんボルト'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'かみなり'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'じしん'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'どくどく'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'ねむる'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'いわなだれ'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'みがわり'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'まもる'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'がまん'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'ねごと'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'あまごい'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'にほんばれ'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'かみくだく'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'からげんき'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'おおぞらほう'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'めいそう'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'みずのはどう'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'じゅうりょく'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'ジャイロボール'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'フレアドライブ'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'はどうだん'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'あくのはどう'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'むしのさざめき'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'りゅうのはどう'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'パワージェム'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'エナジーボール'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'だいちのちから'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'ギガインパクト'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'しねんのずつき'},
-              {'level_learned_at' => 0, 'move_learn_method' => 'machine', 'name' => 'ラスターカノン'},
-              {'level_learned_at' => 1, 'move_learn_method' => 'level-up', 'name' => 'からにこもる'},
-              {'level_learned_at' => 1, 'move_learn_method' => 'level-up', 'name' => 'こうそくスピン'},
-              {'level_learned_at' => 1, 'move_learn_method' => 'level-up', 'name' => 'トライアタック'},
-              {'level_learned_at' => 10, 'move_learn_method' => 'level-up', 'name' => 'ねんぱつ'},
-              {'level_learned_at' => 20, 'move_learn_method' => 'level-up', 'name' => 'ずつき'},
-              {'level_learned_at' => 30, 'move_learn_method' => 'level-up', 'name' => 'まもる'},
-              {'level_learned_at' => 40, 'move_learn_method' => 'level-up', 'name' => 'だいちのちから'},
-              {'level_learned_at' => 50, 'move_learn_method' => 'level-up', 'name' => 'ヘビースラム'},
-              {'level_learned_at' => 60, 'move_learn_method' => 'level-up', 'name' => 'てんそくせん'},
-              {'level_learned_at' => 70, 'move_learn_method' => 'level-up', 'name' => 'すてみタックル'},
-              {'level_learned_at' => 80, 'move_learn_method' => 'level-up', 'name' => 'ロックカット'},
-              {'level_learned_at' => 90, 'move_learn_method' => 'level-up', 'name' => 'ジャイロボール'}
-            ],
+            'moves' => [{'accuracy' => nil, 'flavor_text' => nil, 'id' => 110, 'level' => 1, 'move_learn_method' => 'level-up', 'name' => 'からにこもる', 'power' => nil, 'pp' => 40, 'type' => 'みず'}, {'accuracy' => 100, 'flavor_text' => nil, 'id' => 161, 'level' => 1, 'move_learn_method' => 'level-up', 'name' => 'トライアタック', 'power' => 80, 'pp' => 10, 'type' => 'ノーマル'}, {'accuracy' => 100, 'flavor_text' => nil, 'id' => 229, 'level' => 1, 'move_learn_method' => 'level-up', 'name' => 'こうそくスピン', 'power' => 50, 'pp' => 40, 'type' => 'ノーマル'}, {'accuracy' => 100, 'flavor_text' => nil, 'id' => 246, 'level' => 10, 'move_learn_method' => 'level-up', 'name' => 'げんしのちから', 'power' => 60, 'pp' => 5, 'type' => 'いわ'}, {'accuracy' => 100, 'flavor_text' => nil, 'id' => 29, 'level' => 20, 'move_learn_method' => 'level-up', 'name' => 'ずつき', 'power' => 70, 'pp' => 15, 'type' => 'ノーマル'}, {'accuracy' => nil, 'flavor_text' => nil, 'id' => 182, 'level' => 30, 'move_learn_method' => 'level-up', 'name' => 'まもる', 'power' => nil, 'pp' => 10, 'type' => 'ノーマル'}, {'accuracy' => 100, 'flavor_text' => nil, 'id' => 414, 'level' => 40, 'move_learn_method' => 'level-up', 'name' => 'だいちのちから', 'power' => 90, 'pp' => 10, 'type' => 'じめん'}, {'accuracy' => 100, 'flavor_text' => nil, 'id' => 484, 'level' => 50, 'move_learn_method' => 'level-up', 'name' => 'ヘビーボンバー', 'power' => nil, 'pp' => 10, 'type' => 'はがね'}, {'accuracy' => 100, 'flavor_text' => nil, 'id' => 906, 'level' => 60, 'move_learn_method' => 'level-up', 'name' => 'テラクラスター', 'power' => 120, 'pp' => 5, 'type' => 'ノーマル'}, {'accuracy' => 100, 'flavor_text' => nil, 'id' => 38, 'level' => 70, 'move_learn_method' => 'level-up', 'name' => 'すてみタックル', 'power' => 120, 'pp' => 15, 'type' => 'ノーマル'}, {'accuracy' => nil, 'flavor_text' => nil, 'id' => 397, 'level' => 80, 'move_learn_method' => 'level-up', 'name' => 'ロックカット', 'power' => nil, 'pp' => 20, 'type' => 'いわ'}, {'accuracy' => 100, 'flavor_text' => nil, 'id' => 360, 'level' => 90, 'move_learn_method' => 'level-up', 'name' => 'ジャイロボール', 'power' => nil, 'pp' => 5, 'type' => 'はがね'}, {'accuracy' => 100, 'flavor_text' => nil, 'id' => 34, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'のしかかり', 'power' => 85, 'pp' => 15, 'type' => 'ノーマル'}, {'accuracy' => 85, 'flavor_text' => nil, 'id' => 36, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'とっしん', 'power' => 90, 'pp' => 20, 'type' => 'ノーマル'}, {'accuracy' => 100, 'flavor_text' => nil, 'id' => 38, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'すてみタックル', 'power' => 120, 'pp' => 15, 'type' => 'ノーマル'}, {'accuracy' => nil, 'flavor_text' => nil, 'id' => 46, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'ほえる', 'power' => nil, 'pp' => 20, 'type' => 'ノーマル'}, {'accuracy' => 100, 'flavor_text' => nil, 'id' => 53, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'かえんほうしゃ', 'power' => 90, 'pp' => 15, 'type' => 'ほのお'}, {'accuracy' => 100, 'flavor_text' => nil, 'id' => 57, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'なみのり', 'power' => 90, 'pp' => 15, 'type' => 'みず'}, {'accuracy' => 100, 'flavor_text' => nil, 'id' => 58, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'れいとうビーム', 'power' => 90, 'pp' => 10, 'type' => 'こおり'}, {'accuracy' => 90, 'flavor_text' => nil, 'id' => 63, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'はかいこうせん', 'power' => 150, 'pp' => 5, 'type' => 'ノーマル'}, {'accuracy' => 100, 'flavor_text' => nil, 'id' => 76, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'ソーラービーム', 'power' => 120, 'pp' => 10, 'type' => 'くさ'}, {'accuracy' => 100, 'flavor_text' => nil, 'id' => 85, 'level' => 0, 'move_learn_method' => 'machine', 'name' => '１０まんボルト', 'power' => 90, 'pp' => 15, 'type' => 'でんき'}, {'accuracy' => 70, 'flavor_text' => nil, 'id' => 87, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'かみなり', 'power' => 110, 'pp' => 10, 'type' => 'でんき'}, {'accuracy' => 100, 'flavor_text' => nil, 'id' => 89, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'じしん', 'power' => 100, 'pp' => 10, 'type' => 'じめん'}, {'accuracy' => 90, 'flavor_text' => nil, 'id' => 92, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'どくどく', 'power' => nil, 'pp' => 10, 'type' => 'どく'}, {'accuracy' => nil, 'flavor_text' => nil, 'id' => 156, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'ねむる', 'power' => nil, 'pp' => 5, 'type' => 'エスパー'}, {'accuracy' => 90, 'flavor_text' => nil, 'id' => 157, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'いわなだれ', 'power' => 75, 'pp' => 10, 'type' => 'いわ'}, {'accuracy' => nil, 'flavor_text' => nil, 'id' => 164, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'みがわり', 'power' => nil, 'pp' => 10, 'type' => 'ノーマル'}, {'accuracy' => nil, 'flavor_text' => nil, 'id' => 182, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'まもる', 'power' => nil, 'pp' => 10, 'type' => 'ノーマル'}, {'accuracy' => nil, 'flavor_text' => nil, 'id' => 203, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'こらえる', 'power' => nil, 'pp' => 10, 'type' => 'ノーマル'}, {'accuracy' => nil, 'flavor_text' => nil, 'id' => 214, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'ねごと', 'power' => nil, 'pp' => 10, 'type' => 'ノーマル'}, {'accuracy' => nil, 'flavor_text' => nil, 'id' => 240, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'あまごい', 'power' => nil, 'pp' => 5, 'type' => 'みず'}, {'accuracy' => nil, 'flavor_text' => nil, 'id' => 241, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'にほんばれ', 'power' => nil, 'pp' => 5, 'type' => 'ほのお'}, {'accuracy' => 100, 'flavor_text' => nil, 'id' => 242, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'かみくだく', 'power' => 80, 'pp' => 15, 'type' => 'あく'}, {'accuracy' => 100, 'flavor_text' => nil, 'id' => 263, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'からげんき', 'power' => 70, 'pp' => 20, 'type' => 'ノーマル'}, {'accuracy' => 100, 'flavor_text' => nil, 'id' => 311, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'ウェザーボール', 'power' => 50, 'pp' => 10, 'type' => 'ノーマル'}, {'accuracy' => nil, 'flavor_text' => nil, 'id' => 347, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'めいそう', 'power' => nil, 'pp' => 20, 'type' => 'エスパー'}, {'accuracy' => 100, 'flavor_text' => nil, 'id' => 352, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'みずのはどう', 'power' => 60, 'pp' => 20, 'type' => 'みず'}, {'accuracy' => nil, 'flavor_text' => nil, 'id' => 356, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'じゅうりょく', 'power' => nil, 'pp' => 5, 'type' => 'エスパー'}, {'accuracy' => 100, 'flavor_text' => nil, 'id' => 360, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'ジャイロボール', 'power' => nil, 'pp' => 5, 'type' => 'はがね'}, {'accuracy' => 100, 'flavor_text' => nil, 'id' => 394, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'フレアドライブ', 'power' => 120, 'pp' => 15, 'type' => 'ほのお'}, {'accuracy' => nil, 'flavor_text' => nil, 'id' => 396, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'はどうだん', 'power' => 80, 'pp' => 20, 'type' => 'かくとう'}, {'accuracy' => 100, 'flavor_text' => nil, 'id' => 399, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'あくのはどう', 'power' => 80, 'pp' => 15, 'type' => 'あく'}, {'accuracy' => 100, 'flavor_text' => nil, 'id' => 405, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'むしのさざめき', 'power' => 90, 'pp' => 10, 'type' => 'むし'}, {'accuracy' => 100, 'flavor_text' => nil, 'id' => 406, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'りゅうのはどう', 'power' => 85, 'pp' => 10, 'type' => 'ドラゴン'}, {'accuracy' => 100, 'flavor_text' => nil, 'id' => 408, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'パワージェム', 'power' => 80, 'pp' => 20, 'type' => 'いわ'}, {'accuracy' => 100, 'flavor_text' => nil, 'id' => 412, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'エナジーボール', 'power' => 90, 'pp' => 10, 'type' => 'くさ'}, {'accuracy' => 100, 'flavor_text' => nil, 'id' => 414, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'だいちのちから', 'power' => 90, 'pp' => 10, 'type' => 'じめん'}, {'accuracy' => 90, 'flavor_text' => nil, 'id' => 416, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'ギガインパクト', 'power' => 150, 'pp' => 5, 'type' => 'ノーマル'}, {'accuracy' => 90, 'flavor_text' => nil, 'id' => 428, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'しねんのずつき', 'power' => 80, 'pp' => 15, 'type' => 'エスパー'}, {'accuracy' => 100, 'flavor_text' => nil, 'id' => 430, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'ラスターカノン', 'power' => 80, 'pp' => 10, 'type' => 'はがね'}, {'accuracy' => 100, 'flavor_text' => nil, 'id' => 442, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'アイアンヘッド', 'power' => 80, 'pp' => 15, 'type' => 'はがね'}, {'accuracy' => 80, 'flavor_text' => nil, 'id' => 444, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'ストーンエッジ', 'power' => 100, 'pp' => 5, 'type' => 'いわ'}, {'accuracy' => nil, 'flavor_text' => nil, 'id' => 446, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'ステルスロック', 'power' => nil, 'pp' => 20, 'type' => 'いわ'}, {'accuracy' => 100, 'flavor_text' => nil, 'id' => 484, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'ヘビーボンバー', 'power' => nil, 'pp' => 10, 'type' => 'はがね'}, {'accuracy' => 100, 'flavor_text' => nil, 'id' => 500, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'アシストパワー', 'power' => 20, 'pp' => 10, 'type' => 'エスパー'}, {'accuracy' => 100, 'flavor_text' => nil, 'id' => 528, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'ワイルドボルト', 'power' => 90, 'pp' => 15, 'type' => 'でんき'}, {'accuracy' => 100, 'flavor_text' => nil, 'id' => 535, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'ヒートスタンプ', 'power' => nil, 'pp' => 10, 'type' => 'ほのお'}, {'accuracy' => 100, 'flavor_text' => nil, 'id' => 605, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'マジカルシャイン', 'power' => 80, 'pp' => 10, 'type' => 'フェアリー'}, {'accuracy' => 100, 'flavor_text' => nil, 'id' => 776, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'ボディプレス', 'power' => 80, 'pp' => 10, 'type' => 'かくとう'}, {'accuracy' => 90, 'flavor_text' => nil, 'id' => 800, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'メテオビーム', 'power' => 120, 'pp' => 10, 'type' => 'いわ'}, {'accuracy' => 100, 'flavor_text' => nil, 'id' => 815, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'ねっさのだいち', 'power' => 70, 'pp' => 10, 'type' => 'じめん'}, {'accuracy' => 100, 'flavor_text' => nil, 'id' => 861, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'アイススピナー', 'power' => 80, 'pp' => 15, 'type' => 'こおり'}, {'accuracy' => 95, 'flavor_text' => nil, 'id' => 916, 'level' => 0, 'move_learn_method' => 'machine', 'name' => 'サンダーダイブ', 'power' => 100, 'pp' => 15, 'type' => 'でんき'}],
             'name' => 'テラパゴス',
-            'sprites' => {
-              'back_default' => nil,
-              'back_female' => nil,
-              'back_shiny' => nil,
-              'back_shiny_female' => nil,
-              'front_default' => 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1024.png',
-              'front_female' => nil,
-              'front_shiny' => 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/1024.png',
-              'front_shiny_female' => nil
-            },
-            'status' => {
-              'attack' => {'base_stat' => 65, 'effort' => 0},
-              'defense' => {'base_stat' => 85, 'effort' => 1},
-              'hp' => {'base_stat' => 90, 'effort' => 0},
-              'special_attack' => {'base_stat' => 65, 'effort' => 0},
-              'special_defense' => {'base_stat' => 85, 'effort' => 0},
-              'speed' => {'base_stat' => 60, 'effort' => 0}
-            },
-            'types' => [{'name' => 'normal', 'slot' => 1}],
-            'version_group' => 'scarlet-violet',
+            'sprites' => {'front_default' => 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1024.png'},
+            'status' => [
+              {'base_stat' => 90, 'effort' => 0, 'label' => 'HP', 'name' => 'hp'},
+              {'base_stat' => 65, 'effort' => 0, 'label' => 'こうげき', 'name' => 'attack'},
+              {'base_stat' => 85, 'effort' => 1, 'label' => 'ぼうぎょ', 'name' => 'defense'},
+              {'base_stat' => 65, 'effort' => 0, 'label' => 'とくこう', 'name' => 'special_attack'},
+              {'base_stat' => 85, 'effort' => 0, 'label' => 'とくぼう', 'name' => 'special_defense'},
+              {'base_stat' => 60, 'effort' => 0, 'label' => 'すばやさ', 'name' => 'speed'}
+            ],
+            'types' => [{'name' => 'ノーマル', 'slot' => 1}],
             'abilities' => [{'flavor_text' => nil, 'is_hidden' => false, 'name' => 'テラスチェンジ'}],
           }
         )
@@ -225,8 +84,8 @@ RSpec.describe 'Pokemon', type: :request do
         get api_pokemon_path(id), params: {version_group: 'lets-go-pikachu-lets-go-eevee'}
         expect(response).to have_http_status(:success)
         expect(response.parsed_body['moves']).to include(
-          {'name' => 'はなびらのまい', 'level_learned_at' => 0, 'move_learn_method' => 'level-up'},
-          {'name' => 'はなびらのまい', 'level_learned_at' => 1, 'move_learn_method' => 'level-up'}
+          {'id' => 80, 'accuracy' => 100, 'power' => 120, 'pp' => 10, 'type' => 'くさ', 'name' => 'はなびらのまい', 'level' => 0, 'move_learn_method' => 'level-up', 'flavor_text' => "２ー３ターンの　間　花を\nまきちらして　相手を　攻撃する。\nまきちらした　あとは　混乱する。", },
+          {'id' => 80, 'accuracy' => 100, 'power' => 120, 'pp' => 10, 'type' => 'くさ', 'name' => 'はなびらのまい', 'level' => 1, 'move_learn_method' => 'level-up', 'flavor_text' => "２ー３ターンの　間　花を\nまきちらして　相手を　攻撃する。\nまきちらした　あとは　混乱する。", }
         )
       end
     end

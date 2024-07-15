@@ -32,13 +32,11 @@ export type ShowResponse = {
   name: string;
   types: { name: string; slot: number }[];
   status: {
-    attack: Status;
-    defense: Status;
-    hp: Status;
-    special_attack: Status;
-    special_defense: Status;
-    speed: Status;
-  };
+    name: string;
+    label: string;
+    base_stat: number;
+    effort: number;
+  }[];
   sprites: {
     front_default: string;
   };

@@ -99,7 +99,19 @@ function FetchPokemon(props: { id: number; region: VERSION_GROUP }) {
           value: move.name,
         },
         {
-          value: move.level_learned_at,
+          value: move.level,
+        },
+        {
+          value: move.power,
+        },
+        {
+          value: move.accuracy,
+        },
+        {
+          value: move.pp,
+        },
+        {
+          value: move.flavor_text,
         },
       ],
     }));
@@ -111,35 +123,25 @@ function FetchPokemon(props: { id: number; region: VERSION_GROUP }) {
         {
           value: move.name,
         },
+        {
+          value: move.power,
+        },
+        {
+          value: move.accuracy,
+        },
+        {
+          value: move.pp,
+        },
+        {
+          value: move.flavor_text,
+        },
       ],
     }));
 
-  const statuses = [
-    {
-      subject: "HP",
-      status: pokemon.status.hp.base_stat,
-    },
-    {
-      subject: "攻撃",
-      status: pokemon.status.attack.base_stat,
-    },
-    {
-      subject: "防御",
-      status: pokemon.status.defense.base_stat,
-    },
-    {
-      subject: "スピード",
-      status: pokemon.status.speed.base_stat,
-    },
-    {
-      subject: "特防",
-      status: pokemon.status.special_defense.base_stat,
-    },
-    {
-      subject: "特攻",
-      status: pokemon.status.special_attack.base_stat,
-    },
-  ];
+  const statuses = pokemon.status.map((s) => ({
+    subject: s.label,
+    status: s.base_stat,
+  }));
 
   const listContents: {
     title: string;
@@ -165,7 +167,7 @@ function FetchPokemon(props: { id: number; region: VERSION_GROUP }) {
         <>
           {pokemon?.types?.map((type) => (
             <StatusIcon type="done" mr={0.5}>
-              {t(`type.${type.name}`)}
+              {type.name}
             </StatusIcon>
           ))}
         </>
@@ -261,19 +263,58 @@ function FetchPokemon(props: { id: number; region: VERSION_GROUP }) {
       <ListTable
         headers={[
           {
+            noWrap: true,
+            minWidth: 10,
             value: "名前",
           },
           {
+            noWrap: true,
+            minWidth: 3,
             value: "レベル",
+          },
+          {
+            noWrap: true,
+            minWidth: 3,
+            value: "パワー",
+          },
+          {
+            noWrap: true,
+            minWidth: 3,
+            value: "命中",
+          },
+          {
+            noWrap: true,
+            minWidth: 3,
+            value: "PP",
+          },
+          {
+            value: "説明",
           },
         ]}
         rows={levelMoves}
+        fitContent={true}
       />
       <h2>わざマシン</h2>
       <ListTable
         headers={[
           {
+            minWidth: 10,
             value: "名前",
+          },
+          {
+            minWidth: 3,
+            value: "パワー",
+          },
+          {
+            minWidth: 3,
+            value: "命中",
+          },
+          {
+            minWidth: 3,
+            value: "PP",
+          },
+          {
+            value: "説明",
           },
         ]}
         rows={machineMoves}

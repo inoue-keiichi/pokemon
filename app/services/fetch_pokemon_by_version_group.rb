@@ -75,8 +75,9 @@ class FetchPokemonByVersionGroup
                 name
               }
             }
-            pokemon_v2_moveflavortexts(where: {language_id: {_eq: 11}, version_group_id: {_eq: $version_group_id}}) {
+            pokemon_v2_moveflavortexts(where: {language_id: {_eq: 11}}, order_by: {version_group_id: asc}) {
               flavor_text
+              version_group_id
             }
           }
         }
@@ -232,6 +233,7 @@ class FetchPokemonByVersionGroup
     end
 
     moves = pokemon.pokemon_v2_pokemonmoves.map do |m|
+      move_flavor_text = m.pokemon_v2_move.pokemon_v2_moveflavortexts.find{ |f| f.version_group_id == version_group_id } || m.pokemon_v2_move.pokemon_v2_moveflavortexts.last
       Output::Move.new(
         id: m.move_id,
         move_learn_method: m.pokemon_v2_movelearnmethod.name,
@@ -241,7 +243,7 @@ class FetchPokemonByVersionGroup
         accuracy: m.pokemon_v2_move.accuracy,
         pp: m.pokemon_v2_move.pp,
         type: m.pokemon_v2_move.pokemon_v2_type.pokemon_v2_typenames[0].name,
-        flavor_text: m.pokemon_v2_move.pokemon_v2_moveflavortexts[0]&.flavor_text
+        flavor_text: move_flavor_text&.flavor_text
       )
     end
 

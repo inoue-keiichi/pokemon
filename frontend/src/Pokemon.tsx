@@ -102,10 +102,13 @@ function FetchPokemon(props: { id: number; region: VERSION_GROUP }) {
           value: move.level,
         },
         {
-          value: move.power,
+          value: move.type,
         },
         {
-          value: move.accuracy,
+          value: move.power || "-",
+        },
+        {
+          value: move.accuracy || "-",
         },
         {
           value: move.pp,
@@ -124,10 +127,13 @@ function FetchPokemon(props: { id: number; region: VERSION_GROUP }) {
           value: move.name,
         },
         {
-          value: move.power,
+          value: move.type,
         },
         {
-          value: move.accuracy,
+          value: move.power || "-",
+        },
+        {
+          value: move.accuracy || "-",
         },
         {
           value: move.pp,
@@ -274,6 +280,11 @@ function FetchPokemon(props: { id: number; region: VERSION_GROUP }) {
           },
           {
             noWrap: true,
+            minWidth: 5,
+            value: "タイプ",
+          },
+          {
+            noWrap: true,
             minWidth: 3,
             value: "パワー",
           },
@@ -298,18 +309,27 @@ function FetchPokemon(props: { id: number; region: VERSION_GROUP }) {
       <ListTable
         headers={[
           {
+            noWrap: true,
             minWidth: 10,
             value: "名前",
           },
           {
+            noWrap: true,
+            minWidth: 5,
+            value: "タイプ",
+          },
+          {
+            noWrap: true,
             minWidth: 3,
             value: "パワー",
           },
           {
+            noWrap: true,
             minWidth: 3,
             value: "命中",
           },
           {
+            noWrap: true,
             minWidth: 3,
             value: "PP",
           },

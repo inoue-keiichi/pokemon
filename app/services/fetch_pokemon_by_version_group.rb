@@ -112,8 +112,44 @@ class FetchPokemonByVersionGroup
 
   def execute(id:, version_group:)
     version_group_id = change_version_group_to_id(version_group)
-    res = PokemonApi::Client.query(Query, variables: {id: id, version_group_id: version_group_id}).data.pokemon_v2_pokemon[0]
-    parse_output(res, version_group_id)
+    pokemon = PokemonApi::Client.query(Query, variables: {id: id, version_group_id: version_group_id}).data.pokemon_v2_pokemon[0]
+
+    types = pokemon.pokemon_v2_pokemontypes.map do |p|
+      Output::Type.new(
+        slot: p.slot,
+        name: p.pokemon_v2_type.pokemon_v2_typenames[0].name
+      )
+    end
+
+    status = pokemon.pokemon_v2_pokemonstats.map do |s|
+      Output::Status.new(
+        name: s.pokemon_v2_stat.name.sub('-', '_'),
+        label: s.pokemon_v2_stat.pokemon_v2_statnames[0].name,
+        base_stat: s.base_stat,
+        effort: s.effort
+      )
+    end
+
+    sprites = build_sprites(pokemon)
+
+    abilities = build_abilities(pokemon, version_group_id)
+
+    moves = build_moves(pokemon, version_group_id)
+
+    damage_from = build_damage_from(pokemon)
+
+    Output.new(
+      id: pokemon.id,
+      species_id: pokemon.pokemon_v2_pokemonspecy.id,
+      name: pokemon.pokemon_v2_pokemonspecy.pokemon_v2_pokemonspeciesnames[0].name,
+      types: types,
+      status: status,
+      sprites: sprites, # sprites は複数返して欲しい場合ある？
+      abilities: abilities,
+      flavor_text: pokemon.pokemon_v2_pokemonspecy.pokemon_v2_pokemonspeciesflavortexts[0]&.flavor_text,
+      moves: moves,
+      damage_from: damage_from
+    )
   end
 
   class Output
@@ -189,28 +225,15 @@ class FetchPokemonByVersionGroup
 
   private
 
-  def parse_output(pokemon, version_group_id) # rubocop:disable Metrics/PerceivedComplexity
-    types = pokemon.pokemon_v2_pokemontypes.map do |p|
-      Output::Type.new(
-        slot: p.slot,
-        name: p.pokemon_v2_type.pokemon_v2_typenames[0].name
-      )
-    end
-
-    status = pokemon.pokemon_v2_pokemonstats.map do |s|
-      Output::Status.new(
-        name: s.pokemon_v2_stat.name.sub('-', '_'),
-        label: s.pokemon_v2_stat.pokemon_v2_statnames[0].name,
-        base_stat: s.base_stat,
-        effort: s.effort
-      )
-    end
-
+  def build_sprites(pokemon)
     front_default = pokemon.pokemon_v2_pokemonsprites.first.sprites['other']['official-artwork']['front_default'] ||
                     "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/#{pokemon.id}.png" # TODO: 暫定対応
-    sprites = Output::Sprite.new(front_default: front_default)
 
-    abilities = pokemon.pokemon_v2_pokemonabilities.map do |a|
+    return Output::Sprite.new(front_default: front_default)
+  end
+
+  def build_abilities(pokemon, version_group_id)
+    pokemon.pokemon_v2_pokemonabilities.map do |a|
       ability = a.pokemon_v2_ability.pokemon_v2_abilityflavortexts.find{ |f| f.version_group_id == version_group_id } || a.pokemon_v2_ability.pokemon_v2_abilityflavortexts.last
       Output::Ability.new(
         name: a.pokemon_v2_ability.pokemon_v2_abilitynames[0].name,
@@ -218,8 +241,10 @@ class FetchPokemonByVersionGroup
         flavor_text: ability&.flavor_text
       )
     end
+  end
 
-    moves = pokemon.pokemon_v2_pokemonmoves.map do |m|
+  def build_moves(pokemon, version_group_id)
+    pokemon.pokemon_v2_pokemonmoves.map do |m|
       move_flavor_text = m.pokemon_v2_move.pokemon_v2_moveflavortexts.find{ |f| f.version_group_id == version_group_id } || m.pokemon_v2_move.pokemon_v2_moveflavortexts.last
       Output::Move.new(
         id: m.move_id,
@@ -233,25 +258,15 @@ class FetchPokemonByVersionGroup
         flavor_text: move_flavor_text&.flavor_text
       )
     end
+  end
 
+  def build_damage_from(pokemon)
     damage_from = TYPE_DAMAGE_INITIAL_HASH.dup
     pokemon.pokemon_v2_pokemontypes.each do |t|
       t.pokemon_v2_type.pokemon_v2_typeefficacies_by_target_type_id.each do |e|
         damage_from[e.pokemon_v2_type.name.to_sym] = damage_from[e.pokemon_v2_type.name.to_sym] * e.damage_factor / 100.0
       end
     end
-
-    Output.new(
-      id: pokemon.id,
-      species_id: pokemon.pokemon_v2_pokemonspecy.id,
-      name: pokemon.pokemon_v2_pokemonspecy.pokemon_v2_pokemonspeciesnames[0].name,
-      types: types,
-      status: status,
-      sprites: sprites, # sprites は複数返して欲しい場合ある？
-      abilities: abilities,
-      flavor_text: pokemon.pokemon_v2_pokemonspecy.pokemon_v2_pokemonspeciesflavortexts[0]&.flavor_text,
-      moves: moves,
-      damage_from: damage_from
-    )
+    return damage_from
   end
 end

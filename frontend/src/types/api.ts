@@ -29,6 +29,7 @@ export type VERSION_GROUP =
 
 export type ShowResponse = {
   id: number;
+  species_id: number;
   name: string;
   types: { name: string; slot: number }[];
   status: {

@@ -48,7 +48,9 @@ function Pokemon() {
 
 function FetchPokemon(props: { id: number; region: VERSION_GROUP }) {
   const { id, region } = props;
+  //const [speciesId, setSpeciesId] = useState<number>(pokemon.spicies_id);
   const pokemon = usePokemon(id, region);
+  console.log(`species_id: ${pokemon.species_id}`);
 
   const damageFrom = (() => {
     const fourTimes: string[] = [];
@@ -251,7 +253,10 @@ function FetchPokemon(props: { id: number; region: VERSION_GROUP }) {
           </Loading>
         }
       >
-        <FetchPokemonForm id={id} region={region}></FetchPokemonForm>
+        <FetchPokemonForm
+          species_id={pokemon.species_id}
+          region={region}
+        ></FetchPokemonForm>
       </Suspense>
       <h2>受けるダメージ</h2>
       <ListTable
@@ -343,19 +348,20 @@ function FetchPokemon(props: { id: number; region: VERSION_GROUP }) {
   );
 }
 
-function FetchPokemonForm(props: { id: number; region: VERSION_GROUP }) {
-  const { id, region } = props;
-  const { forms } = usePokemonForms(id, region);
+function FetchPokemonForm(props: {
+  species_id: number;
+  region: VERSION_GROUP;
+}) {
+  const { species_id, region } = props;
+  const { forms } = usePokemonForms(species_id, region);
 
   return (
     <HStack>
-      {forms
-        .filter((form) => form.is_in_version_group)
-        .map((form) => (
-          <Link to={`/pokemons/${form.id}`}>
-            {form.name.replace(/^.+\(/, "").replace(/\)$/, "")}
-          </Link>
-        ))}
+      {forms.map((form) => (
+        <Link to={`/pokemons/${form.id}`}>
+          {form.name.replace(/^.+\(/, "").replace(/\)$/, "")}
+        </Link>
+      ))}
     </HStack>
   );
 }

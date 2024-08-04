@@ -20,8 +20,8 @@ class Api::PokemonsController < ApplicationController
 
   def forms
     input = Api::Pokemons::Shared::InputForm.new(id: params[:id].to_i, version_group: params[:version_group])
-    output = FetchForms.new.execute(id: input.id, version_group: input.version_group)
-    render json: Pokemon::Forms::Serializer.new.serialize(output).to_json
+    output = ListPokemonFormsBySpeciesId.new.execute(pokemon_species_id: input.id, version_group: input.version_group)
+    render json: output
   end
 
   def evolution_chain

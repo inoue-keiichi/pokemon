@@ -12,4 +12,19 @@ module PokemonApi
 
   # 上記を使ってクライアントを作成
   Client = GraphQL::Client.new(schema: Schema, execute: HTTP)
+
+  def change_version_group_to_id(version_group)
+    case version_group
+    when 'heartgold-soulsilver'
+      return 10
+    when 'lets-go-pikachu-lets-go-eevee'
+      return 19
+    when 'sword-shield'
+      return 20
+    when 'scarlet-violet'
+      return 25
+    else
+      return -1
+    end
+  end
 end

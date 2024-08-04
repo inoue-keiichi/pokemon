@@ -6,6 +6,7 @@ class FetchPokemonByVersionGroup
       pokemon_v2_pokemon(where: {id: {_eq: $id}}) {
         id
         pokemon_v2_pokemonspecy {
+          id
           pokemon_v2_pokemonspeciesnames(where: {language_id: {_eq: 11}}) {
             name
           }
@@ -116,10 +117,11 @@ class FetchPokemonByVersionGroup
   end
 
   class Output
-    attr_accessor :id, :name, :types, :status, :sprites, :abilities, :flavor_text, :moves, :damage_from
+    attr_accessor :id, :species_id, :name, :types, :status, :sprites, :abilities, :flavor_text, :moves, :damage_from
 
-    def initialize(id:, name:, types:, status:, sprites:, abilities:, flavor_text:, moves:, damage_from:)
+    def initialize(id:, species_id:, name:, types:, status:, sprites:, abilities:, flavor_text:, moves:, damage_from:)
       @id = id
+      @species_id = species_id
       @name = name
       @types = types
       @status = status
@@ -186,21 +188,6 @@ class FetchPokemonByVersionGroup
   end
 
   private
-  def change_version_group_to_id(version_group)
-    case version_group
-    when 'heartgold-soulsilver'
-      return 10
-    when 'lets-go-pikachu-lets-go-eevee'
-      return 19
-    when 'sword-shield'
-      return 20
-    when 'scarlet-violet'
-      return 25
-    else
-      return -1
-    end
-
-  end
 
   def parse_output(pokemon, version_group_id) # rubocop:disable Metrics/PerceivedComplexity
     types = pokemon.pokemon_v2_pokemontypes.map do |p|
@@ -256,6 +243,7 @@ class FetchPokemonByVersionGroup
 
     Output.new(
       id: pokemon.id,
+      species_id: pokemon.pokemon_v2_pokemonspecy.id,
       name: pokemon.pokemon_v2_pokemonspecy.pokemon_v2_pokemonspeciesnames[0].name,
       types: types,
       status: status,

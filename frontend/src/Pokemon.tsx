@@ -169,6 +169,13 @@ function FetchPokemon(props: { id: number; region: VERSION_GROUP }) {
       },
     ];
 
+    if (pokemon?.form_type) {
+      result.push({
+        title: "すがた",
+        value: pokemon.form_type.name,
+      });
+    }
+
     const type = {
       title: "タイプ",
       value: (
@@ -181,6 +188,7 @@ function FetchPokemon(props: { id: number; region: VERSION_GROUP }) {
         </>
       ),
     };
+    result.push(type);
 
     const abilities = pokemon?.abilities?.map((ability, index) => ({
       title: `特性${index + 1}`,
@@ -201,15 +209,13 @@ function FetchPokemon(props: { id: number; region: VERSION_GROUP }) {
         </>
       ),
     }));
+    result.push(...abilities);
 
-    const flavor_text = pokemon?.flavor_text && {
-      title: "説明",
-      value: pokemon?.flavor_text,
-    };
-
-    result.push(type, ...abilities);
-    if (flavor_text) {
-      result.push(flavor_text);
+    if (pokemon?.flavor_text) {
+      result.push({
+        title: "説明",
+        value: pokemon?.flavor_text,
+      });
     }
 
     return result;
@@ -357,11 +363,13 @@ function FetchPokemonForm(props: {
 
   return (
     <HStack>
-      {forms.map((form) => (
-        <Link to={`/pokemons/${form.id}`}>
-          {form.name.replace(/^.+\(/, "").replace(/\)$/, "")}
-        </Link>
-      ))}
+      {forms
+        .filter((form) => !form.is_default)
+        .map((form) => (
+          <Link to={`/pokemons/${form.id}`}>
+            {form.name.replace(/^.+\(/, "").replace(/\)$/, "")}
+          </Link>
+        ))}
     </HStack>
   );
 }

@@ -55,10 +55,19 @@ export type ShowResponse = {
   version_group: VERSION_GROUP;
   damage_from: any;
   evolution_chain: Evolution;
+  form_type: {
+    name: string;
+    type: string;
+  };
 };
 
 export type FormsResponse = {
-  forms: { id: number; name: string; is_in_version_group: boolean }[];
+  forms: {
+    id: number;
+    name: string;
+    is_in_version_group: boolean;
+    is_default: boolean;
+  }[];
 };
 
 export type EvolutionChainResponse = {

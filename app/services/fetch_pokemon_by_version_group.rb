@@ -14,6 +14,12 @@ class FetchPokemonByVersionGroup
             flavor_text
           }
         }
+        pokemon_v2_pokemonforms {
+          form_name
+          pokemon_v2_pokemonformnames(where: {language_id: {_eq: 11}}) {
+            name
+          }
+        }
         pokemon_v2_pokemontypes {
           slot
           pokemon_v2_type {
@@ -138,6 +144,8 @@ class FetchPokemonByVersionGroup
 
     damage_from = build_damage_from(pokemon)
 
+    form_type = build_form_type(pokemon.pokemon_v2_pokemonforms.first)
+
     Output.new(
       id: pokemon.id,
       species_id: pokemon.pokemon_v2_pokemonspecy.id,
@@ -148,14 +156,15 @@ class FetchPokemonByVersionGroup
       abilities: abilities,
       flavor_text: pokemon.pokemon_v2_pokemonspecy.pokemon_v2_pokemonspeciesflavortexts[0]&.flavor_text,
       moves: moves,
-      damage_from: damage_from
+      damage_from: damage_from,
+      form_type: form_type
     )
   end
 
   class Output
-    attr_accessor :id, :species_id, :name, :types, :status, :sprites, :abilities, :flavor_text, :moves, :damage_from
+    attr_accessor :id, :species_id, :name, :types, :status, :sprites, :abilities, :flavor_text, :moves, :damage_from, :form_type
 
-    def initialize(id:, species_id:, name:, types:, status:, sprites:, abilities:, flavor_text:, moves:, damage_from:)
+    def initialize(id:, species_id:, name:, types:, status:, sprites:, abilities:, flavor_text:, moves:, damage_from:, form_type:)
       @id = id
       @species_id = species_id
       @name = name
@@ -166,6 +175,7 @@ class FetchPokemonByVersionGroup
       @flavor_text = flavor_text
       @moves = moves
       @damage_from = damage_from
+      @form_type = form_type
     end
 
     class Type
@@ -221,9 +231,43 @@ class FetchPokemonByVersionGroup
         @flavor_text = flavor_text
       end
     end
+
+    class FormType
+      attr_accessor :type
+      attr_accessor :name
+
+      def initialize(type:, name:)
+        @type = type
+        @name = name
+      end
+    end
   end
 
   private
+
+  def build_form_type(poke_form)
+    return if poke_form.form_name.blank?
+
+    name = case poke_form.form_name
+           when 'mega', 'mega-x', 'mega-y'
+             'メガシンカ'
+           when 'gmax'
+             'キョダイマックス'
+           when 'paldea-combat-breed'
+             'パルデアのすがた・コンバットしゅ'
+           when  'paldea-blaze-breed'
+             'パルデアのすがた・ブレイズしゅ'
+           when 'paldea-aqua-breed'
+             'パルデアのすがた・ウォーターしゅ'
+           when 'terastal'
+             'テラスタル'
+           when 'stellar'
+             'ステラ'
+           else
+             ''
+           end
+    return Output::FormType.new(type: poke_form.form_name, name: name)
+  end
 
   def build_sprites(pokemon)
     front_default = pokemon.pokemon_v2_pokemonsprites.first.sprites['other']['official-artwork']['front_default'] ||

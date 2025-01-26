@@ -144,7 +144,7 @@ class FetchPokemonByVersionGroup
 
     damage_from = build_damage_from(pokemon)
 
-    form_type = build_form_type(pokemon.pokemon_v2_pokemonforms.first)
+    form_type = build_form_type(pokemon.pokemon_v2_pokemonforms.first, pokemon.pokemon_v2_pokemonspecy.pokemon_v2_pokemonspeciesnames[0].name)
 
     Output.new(
       id: pokemon.id,
@@ -245,28 +245,27 @@ class FetchPokemonByVersionGroup
 
   private
 
-  def build_form_type(poke_form)
+  def build_form_type(poke_form, origin_name)
     return if poke_form.form_name.blank?
 
-    name = case poke_form.form_name
-           when 'mega', 'mega-x', 'mega-y'
-             'メガシンカ'
-           when 'gmax'
-             'キョダイマックス'
-           when 'paldea-combat-breed'
-             'パルデアのすがた・コンバットしゅ'
-           when  'paldea-blaze-breed'
-             'パルデアのすがた・ブレイズしゅ'
-           when 'paldea-aqua-breed'
-             'パルデアのすがた・ウォーターしゅ'
-           when 'terastal'
-             'テラスタル'
-           when 'stellar'
-             'ステラ'
-           else
-             ''
-           end
-    return Output::FormType.new(type: poke_form.form_name, name: name)
+    return Output::FormType.new(type: poke_form.form_name, name: build_name(poke_form, origin_name))
+  end
+
+  def build_name(poke_form, origin_name)
+    return "キョダイマックス#{origin_name}" if poke_form.form_name == 'gmax'
+
+    case poke_form.form_name
+    when 'paldea-combat-breed'
+      return 'パルデアのすがた・コンバットしゅ'
+    when  'paldea-blaze-breed'
+      return 'パルデアのすがた・ブレイズしゅ'
+    when 'paldea-aqua-breed'
+      return 'パルデアのすがた・ウォーターしゅ'
+    end
+
+    return poke_form.pokemon_v2_pokemonformnames[0].name if poke_form.pokemon_v2_pokemonformnames[0]&.name.present?
+
+    return origin_name
   end
 
   def build_sprites(pokemon)

@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import DamageTable from "../src/DamageTable";
+import Damage from "../src/Damage";
 import Header from "../src/Header";
 import Pokemon from "../src/Pokemon";
 import PokemonList from "../src/PokemonList";
@@ -18,7 +18,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <Routes>
           <Route path="/pokemons" element={<PokemonList />} />
           <Route path="/pokemons/:id" element={<Pokemon />} />
-          <Route path="/damage_table" element={<DamageTable />} />
+          <Route path="/damage" element={<Damage />} />
           <Route path="*" element={<PokemonList />} />
         </Routes>
       </BrowserRouter>

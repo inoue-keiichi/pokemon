@@ -2,7 +2,7 @@ import { GlobalNavi } from "@freee_jp/vibes";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-type Page = "pokemons" | "damage_table";
+type Page = "pokemons" | "damage";
 
 export function Header() {
   const navigate = useNavigate();
@@ -25,13 +25,13 @@ export function Header() {
           },
         },
         {
-          title: "ダメージ表",
-          url: "/damage_table",
+          title: "ダメージ",
+          url: "/damage",
           // IconComponent: MdHome,
-          current: currentPage == "damage_table",
+          current: currentPage == "damage",
           onSelfWindowNavigation: () => {
-            setCurrentPage("damage_table");
-            navigate(`/damage_table`);
+            setCurrentPage("damage");
+            navigate(`/damage`);
           },
         },
       ]}

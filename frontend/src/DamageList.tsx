@@ -66,7 +66,6 @@ export function DamageList(props: Props) {
           halfs.push(t(`type.${key}`));
           break;
         default:
-          console.log(value);
           throw new Error("unkown multiple number");
       }
     });
@@ -124,7 +123,6 @@ export function DamageList(props: Props) {
           quarters.push(t(`type.${key}`));
           break;
         default:
-          console.log(value);
           throw new Error("unkown multiple number");
       }
     });

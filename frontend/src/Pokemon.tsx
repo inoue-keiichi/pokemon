@@ -48,9 +48,7 @@ function Pokemon() {
 
 function FetchPokemon(props: { id: number; region: VERSION_GROUP }) {
   const { id, region } = props;
-  //const [speciesId, setSpeciesId] = useState<number>(pokemon.spicies_id);
   const pokemon = usePokemon(id, region);
-  console.log(`species_id: ${pokemon.species_id}`);
 
   const damageFrom = (() => {
     const fourTimes: string[] = [];
@@ -180,8 +178,8 @@ function FetchPokemon(props: { id: number; region: VERSION_GROUP }) {
       title: "タイプ",
       value: (
         <>
-          {pokemon?.types?.map((type) => (
-            <StatusIcon type="done" mr={0.5}>
+          {pokemon?.types?.map((type, index) => (
+            <StatusIcon type="done" mr={0.5} key={`type_status_icon_${index}`}>
               {type.name}
             </StatusIcon>
           ))}
@@ -196,7 +194,11 @@ function FetchPokemon(props: { id: number; region: VERSION_GROUP }) {
         <>
           <Text>{`${ability.name}`}</Text>
           {ability.is_hidden && (
-            <StatusIcon type="done" ml={0.5}>
+            <StatusIcon
+              type="done"
+              ml={0.5}
+              key={`ability_status_icon_${index}`}
+            >
               夢特性
             </StatusIcon>
           )}
@@ -396,12 +398,17 @@ function FetchEvolutionChain(props: { id: number; region: VERSION_GROUP }) {
 
   return (
     <HStack>
-      {evolution_layers.map((layer) => (
-        <VStack>
+      {evolution_layers.map((layer, i) => (
+        <VStack key={`evolution_${i}`}>
           {layer
             .filter((evolution) => evolution.is_in_version_group)
             .map((evolution) => (
-              <Link to={`/pokemons/${evolution.id}`}>{evolution.name}</Link>
+              <Link
+                key={`evolution_link_${i}`}
+                to={`/pokemons/${evolution.id}`}
+              >
+                {evolution.name}
+              </Link>
             ))}
         </VStack>
       ))}

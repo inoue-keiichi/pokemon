@@ -14,7 +14,12 @@ Rails.application.routes.draw do
         get :forms
         get :evolution_chain
       end
+      collection do
+        post :identify
+      end
     end
+
+    resources :token, only: [:index]
   end
 
   # マッチしないルートはフロントに流す

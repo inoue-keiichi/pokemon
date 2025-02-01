@@ -29,4 +29,11 @@ class Api::PokemonsController < ApplicationController
     output = FetchEvolutionChain.new.execute(id: input.id, version_group: input.version_group)
     render json: Pokemon::EvolutionChain::Serializer.new.serialize(output).to_json
   end
+
+  def identify
+    output = IdentifyPokemon.new.execute(file: params[:file])
+    render json: Pokemon::Identify::Serializer.new.serialize(output).to_json
+  rescue StandardError => e
+    render json: {message: e}, status: :internal_server_error
+  end
 end

@@ -367,8 +367,8 @@ function FetchPokemonForm(props: {
     <HStack>
       {forms
         .filter((form) => !form.is_default)
-        .map((form) => (
-          <Link to={`/pokemons/${form.id}`}>
+        .map((form, index) => (
+          <Link key={`form_link_${index}`} to={`/pokemons/${form.id}`}>
             {form.name.replace(/^.+\(/, "").replace(/\)$/, "")}
           </Link>
         ))}

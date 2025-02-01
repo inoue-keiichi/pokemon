@@ -13,11 +13,20 @@ import {
 } from "@freee_jp/vibes";
 import "@freee_jp/vibes/css";
 import Romanizer from "js-hira-kata-romanize";
-import { Dispatch, SetStateAction, Suspense, useEffect, useState } from "react";
+import {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  Suspense,
+  useEffect,
+  useState,
+} from "react";
+import { ErrorBoundary } from "react-error-boundary";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { searchFilterUpdated } from "./features/searchFilterSlice";
+import { useIdentifyPokemon } from "./hooks/useIdetifyPokemon";
 import { usePokedexes } from "./hooks/usePokedexes";
 import { RootState } from "./store";
 import { Pokedex, VERSION_GROUP } from "./types/api";
@@ -56,7 +65,12 @@ const romanizer = new Romanizer({
   chouon: Romanizer.CHOUON_SKIP,
 });
 
-function PokemonList() {
+type Props = {
+  csrfToken: string;
+};
+
+function PokemonList(props: Props) {
+  const { csrfToken } = props;
   const state = useSelector((state: RootState) => state.searchFilter);
   const dispatch = useDispatch();
   const [pokedexes, setPokedexes] = useState<Pokedex[]>([]);
@@ -147,6 +161,19 @@ function PokemonList() {
               />
             </FormControl>
           </div>
+          <div style={{ textAlign: "left", marginTop: "auto" }}>
+            <ErrorBoundary fallback={<div>Error</div>}>
+              <Suspense
+                fallback={
+                  <Loading isLoading inline>
+                    <InlineSpinner isLoading large />
+                  </Loading>
+                }
+              >
+                <IdentifyPokemonButton csrfToken={csrfToken} />
+              </Suspense>
+            </ErrorBoundary>
+          </div>
         </HStack>
       </ColumnBase>
       <Suspense
@@ -162,12 +189,46 @@ function PokemonList() {
   );
 }
 
+const IdentifyPokemonButton = (props: { csrfToken: string }) => {
+  const { csrfToken } = props;
+
+  const navigate = useNavigate();
+  const [file, setFile] = useState<File>();
+
+  const pokemon = useIdentifyPokemon(csrfToken, file);
+
+  useEffect(() => {
+    console.log(pokemon);
+    if (pokemon) {
+      navigate(`/pokemons/${pokemon.id}`);
+    }
+  }, [pokemon]);
+
+  const identifyPokemonFromImage = async (e: ChangeEvent<HTMLInputElement>) => {
+    const f = e.target.files?.item(0);
+    if (!f) {
+      return;
+    }
+    setFile(f);
+  };
+
+  return (
+    <input
+      type="file"
+      capture="environment"
+      accept="image/*"
+      onChange={identifyPokemonFromImage}
+    />
+  );
+};
+
 type PokeListProps = {
   state: {
     id: number;
     name: string;
     version_group: VERSION_GROUP;
   };
+  file?: File;
   setPokedexes: Dispatch<SetStateAction<Pokedex[]>>;
 };
 

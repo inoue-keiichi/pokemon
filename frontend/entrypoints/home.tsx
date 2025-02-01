@@ -10,18 +10,25 @@ import "../src/index.css";
 import { store } from "../src/store";
 import "./i18n";
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <BrowserRouter>
-        <Header />
-        <Routes>
-          <Route path="/pokemons" element={<PokemonList />} />
-          <Route path="/pokemons/:id" element={<Pokemon />} />
-          <Route path="/damage" element={<Damage />} />
-          <Route path="*" element={<PokemonList />} />
-        </Routes>
-      </BrowserRouter>
-    </Provider>
-  </React.StrictMode>
-);
+fetch("api/token").then((res) => {
+  const csrfToken = res.headers.get("x-csrf-token") || "";
+
+  ReactDOM.createRoot(document.getElementById("root")!).render(
+    <React.StrictMode>
+      <Provider store={store}>
+        <BrowserRouter>
+          <Header />
+          <Routes>
+            <Route
+              path="/pokemons"
+              element={<PokemonList csrfToken={csrfToken} />}
+            />
+            <Route path="/pokemons/:id" element={<Pokemon />} />
+            <Route path="/damage" element={<Damage />} />
+            <Route path="*" element={<PokemonList csrfToken={csrfToken} />} />
+          </Routes>
+        </BrowserRouter>
+      </Provider>
+    </React.StrictMode>
+  );
+});

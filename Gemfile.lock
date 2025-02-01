@@ -107,11 +107,24 @@ GEM
       irb (~> 1.10)
       reline (>= 0.3.8)
     diff-lcs (1.5.0)
+    dotenv (3.1.7)
+    dotenv-rails (3.1.7)
+      dotenv (= 3.1.7)
+      railties (>= 6.1)
     drb (2.2.0)
       ruby2_keywords
     dry-cli (1.0.0)
     e2mmap (0.1.0)
     erubi (1.12.0)
+    event_stream_parser (1.0.0)
+    faraday (2.12.2)
+      faraday-net_http (>= 2.0, < 3.5)
+      json
+      logger
+    faraday-multipart (1.1.0)
+      multipart-post (~> 2.0)
+    faraday-net_http (3.4.0)
+      net-http (>= 0.5.0)
     foreman (0.87.2)
     globalid (1.2.1)
       activesupport (>= 6.1)
@@ -141,6 +154,7 @@ GEM
     kramdown-parser-gfm (1.1.0)
       kramdown (~> 2.0)
     language_server-protocol (3.17.0.3)
+    logger (1.6.5)
     loofah (2.22.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
@@ -156,7 +170,10 @@ GEM
     mini_portile2 (2.8.5)
     minitest (5.21.2)
     msgpack (1.7.2)
+    multipart-post (2.4.1)
     mutex_m (0.2.0)
+    net-http (0.6.0)
+      uri
     net-imap (0.4.9.1)
       date
       net-protocol
@@ -289,6 +306,10 @@ GEM
       rubocop (~> 1.40)
       rubocop-capybara (~> 2.17)
       rubocop-factory_bot (~> 2.22)
+    ruby-openai (7.3.1)
+      event_stream_parser (>= 0.3.0, < 2.0.0)
+      faraday (>= 1)
+      faraday-multipart (>= 1)
     ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
     rubyzip (2.3.2)
@@ -336,6 +357,7 @@ GEM
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.5.0)
+    uri (1.0.2)
     vcr (6.2.0)
     vite_rails (3.0.17)
       railties (>= 5.1, < 8)
@@ -376,6 +398,7 @@ DEPENDENCIES
   bootsnap
   capybara
   debug
+  dotenv-rails
   foreman
   graphql-client (~> 0.22.0)
   importmap-rails
@@ -390,6 +413,7 @@ DEPENDENCIES
   rubocop-performance
   rubocop-rails
   rubocop-rspec
+  ruby-openai
   selenium-webdriver
   solargraph
   sprockets-rails

@@ -25,7 +25,7 @@ import { useEvolutionChain } from "./hooks/useEvolutionChain";
 import { usePokemon } from "./hooks/usePokemon";
 import { usePokemonForms } from "./hooks/usePokemonForms";
 import { RootState } from "./store";
-import { Evolution, VERSION_GROUP } from "./types/api";
+import { Evolution, EvolutionDetail, VERSION_GROUP } from "./types/api";
 
 function Pokemon() {
   const { id } = useParams();
@@ -396,19 +396,24 @@ function FetchEvolutionChain(props: { id: number; region: VERSION_GROUP }) {
     }
   }
 
+  const createEvolutionDetail = (evolutionDetail: EvolutionDetail) => {
+    if (evolutionDetail.min_level) {
+      return <p>{`Lv. ${evolutionDetail.min_level}で進化`}</p>;
+    }
+  };
+
   return (
-    <HStack>
+    <HStack alignItems={"start"}>
       {evolution_layers.map((layer, i) => (
         <VStack key={`evolution_${i}`}>
           {layer
             .filter((evolution) => evolution.is_in_version_group)
             .map((evolution) => (
-              <Link
-                key={`evolution_link_${i}`}
-                to={`/pokemons/${evolution.id}`}
-              >
-                {evolution.name}
-              </Link>
+              <div key={`evolution_${evolution.name}_${i}`}>
+                <Link to={`/pokemons/${evolution.id}`}>{evolution.name}</Link>
+                {evolution.evolution_details[0] &&
+                  createEvolutionDetail(evolution.evolution_details[0])}
+              </div>
             ))}
         </VStack>
       ))}

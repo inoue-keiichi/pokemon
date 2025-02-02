@@ -78,10 +78,14 @@ export type Evolution = {
   id: number;
   name: string;
   is_baby: boolean;
-  evolution_details: any[];
+  evolution_details: EvolutionDetail[];
   next_ids: number[];
   evolves_to: Evolution[];
   is_in_version_group: boolean;
+};
+
+export type EvolutionDetail = {
+  min_level?: number;
 };
 
 type Status = {

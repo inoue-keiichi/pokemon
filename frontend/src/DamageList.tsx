@@ -33,15 +33,15 @@ export function DamageList(props: Props) {
     damageToValueMap.set(dt.value, 1);
   }
   for (const damageTo of damageTos) {
-    for (const key of damageTo.damage.double_from) {
+    for (const key of damageTo.damage.double_to) {
       const value = damageToValueMap.get(key)!;
       damageToValueMap.set(key, value * 2);
     }
-    for (const key of damageTo.damage.half_from) {
+    for (const key of damageTo.damage.half_to) {
       const value = damageToValueMap.get(key)!;
       damageToValueMap.set(key, value * 0.5);
     }
-    for (const key of damageTo.damage.no_from) {
+    for (const key of damageTo.damage.no_to) {
       const value = damageToValueMap.get(key)!;
       damageToValueMap.set(key, value * 0);
     }

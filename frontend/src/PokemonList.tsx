@@ -258,12 +258,13 @@ const FetchPokemonList = (props: PokeListProps) => {
             {pokedex.pokemons.map((pokemon) => (
               <GridBlock
                 key={`pokemon_${pokemon.id}_${pokemon.pokedex_number}`}
-                size={"oneThird"}
+                size={"half"}
                 mb={1}
               >
                 <ListCard
                   title={`${pokemon.pokedex_number}. ${pokemon.display_name}`}
                   onClick={() => navigate(`/pokemons/${pokemon.id}`)}
+                  thumbnail={<img src={pokemon.sprite_path} />}
                 />
               </GridBlock>
             ))}

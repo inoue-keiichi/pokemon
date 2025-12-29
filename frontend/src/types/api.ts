@@ -11,6 +11,7 @@ export type Pokedex = {
     pokedex_number: number;
     name: string;
     display_name: string;
+    sprite_path: string;
   }[];
 };
 
